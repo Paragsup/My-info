@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Parag Pareta | Aspiring Software Engineer & CS Student</title>
+  <meta name="description" content="Portfolio of Parag Pareta, Computer Science Student and Aspiring Software Engineer.">
+  <!-- Tailwind CSS via CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Lucide Icons via CDN -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Plus Jakarta Sans', 'sans-serif'],
+            mono: ['JetBrains Mono', 'monospace'],
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    body { font-family: 'Plus Jakarta Sans', sans-serif; }
+    code, pre { font-family: 'JetBrains Mono', monospace; }
+  </style>
+</head>
+<body class="bg-zinc-950 text-zinc-100 antialiased selection:bg-indigo-500/30 selection:text-indigo-200">
+
+  <!-- Sticky Top Navigation -->
+  <header class="sticky top-0 z-50 backdrop-blur-md bg-zinc-950/85 border-b border-zinc-800/80">
+    <div class="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
+      <a href="#home" class="text-lg font-bold tracking-tight text-white hover:text-indigo-400 transition-colors flex items-center gap-2">
+        <span class="w-7 h-7 rounded-lg bg-zinc-900 border border-zinc-700/80 flex items-center justify-center text-xs font-mono text-indigo-400 font-bold">PP</span>
+        <span>parag pareta<span class="text-indigo-500">.</span></span>
+      </a>
+      <nav class="hidden md:flex items-center gap-7 text-sm font-medium text-zinc-400">
+        <a href="#about" class="hover:text-white transition-colors">About</a>
+        <a href="#education" class="hover:text-white transition-colors">Education</a>
+        <a href="#skills" class="hover:text-white transition-colors">Skills</a>
+        <a href="#projects" class="hover:text-white transition-colors">Projects</a>
+        <a href="#contact" class="hover:text-white transition-colors">Contact</a>
+      </nav>
+      <div class="flex items-center gap-3">
+        <a href="#contact" class="px-4 py-2 text-xs font-semibold text-white bg-indigo-600 rounded-lg hover:bg-indigo-500 transition-colors shadow-sm">
+          Get in Touch
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <!-- Hero Section -->
+  <section id="home" class="py-24 md:py-32 px-6 max-w-6xl mx-auto border-b border-zinc-800/60">
+    <div class="max-w-3xl">
+      <div class="inline-flex items-center gap-2 px-3 py-1 text-xs font-medium text-indigo-400 bg-indigo-950/40 border border-indigo-800/60 rounded-full mb-6">
+        <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+        Available for internships & collaborations
+      </div>
+      <h1 class="text-4xl sm:text-6xl font-extrabold text-white tracking-tight mb-6 leading-tight">
+        Hi, I'm Parag Pareta
+      </h1>
+      <p class="text-xl sm:text-2xl font-semibold text-zinc-300 mb-4">
+        Computer Science Student & Aspiring Software Engineer
+      </p>
+      <p class="text-base sm:text-lg text-zinc-400 leading-relaxed mb-8 max-w-2xl">
+        Passionate about crafting scalable full-stack applications, distributed algorithms, and exploring modern web and AI technologies. Focused on turning complex challenges into clean, resilient code.
+      </p>
+      <div class="flex flex-wrap items-center gap-4">
+        <a href="#projects" class="px-6 py-3 text-sm font-semibold text-white bg-indigo-600 rounded-lg hover:bg-indigo-500 transition-colors shadow-lg shadow-indigo-600/20">
+          View Projects
+        </a>
+        <a href="#contact" class="px-6 py-3 text-sm font-semibold text-zinc-300 bg-zinc-900 border border-zinc-700/80 rounded-lg hover:bg-zinc-800 hover:text-white transition-colors">
+          Contact Me
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- About Section -->
+  <section id="about" class="py-20 px-6 max-w-6xl mx-auto border-b border-zinc-800/60">
+    <h2 class="text-xs font-mono uppercase tracking-wider text-indigo-400 mb-2">Background</h2>
+    <h3 class="text-2xl sm:text-3xl font-bold text-white mb-6">About Me</h3>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-10 text-zinc-300 leading-relaxed text-sm sm:text-base">
+      <div class="space-y-4">
+        <p>
+          I am a dedicated Computer Science undergraduate with a deep curiosity for how software systems operate under the hood. From low-level memory efficiency in C++ to building responsive modern web applications in React and TypeScript, I enjoy the full spectrum of software creation.
+        </p>
+        <p>
+          My focus revolves around writing readable, maintainable, and mathematically sound code. Whether analyzing asymptotic complexities in algorithmic puzzles or engineering reliable client-server workflows, I treat software engineering as both a craft and a discipline.
+        </p>
+      </div>
+      <div class="bg-zinc-900/60 border border-zinc-800 rounded-xl p-6 space-y-4">
+        <h4 class="text-base font-semibold text-white">Engineering Values</h4>
+        <ul class="space-y-3 text-sm text-zinc-400">
+          <li class="flex items-start gap-2">
+            <span class="text-indigo-400 font-bold">01.</span>
+            <span><strong class="text-zinc-200">First-Principles Problem Solving:</strong> Breaking down requirements into core algorithmic primitives before writing code.</span>
+          </li>
+          <li class="flex items-start gap-2">
+            <span class="text-indigo-400 font-bold">02.</span>
+            <span><strong class="text-zinc-200">Clean Architecture:</strong> Modularity, readable variable naming, and strict type safety over clever hacks.</span>
+          </li>
+          <li class="flex items-start gap-2">
+            <span class="text-indigo-400 font-bold">03.</span>
+            <span><strong class="text-zinc-200">Continuous Growth:</strong> Actively solving Data Structures & Algorithms challenges and learning modern toolsets.</span>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- Education Section -->
+  <section id="education" class="py-20 px-6 max-w-6xl mx-auto border-b border-zinc-800/60">
+    <h2 class="text-xs font-mono uppercase tracking-wider text-indigo-400 mb-2">Academic Journey</h2>
+    <h3 class="text-2xl sm:text-3xl font-bold text-white mb-8">Education</h3>
+    <div class="bg-zinc-900/50 border border-zinc-800/80 rounded-xl p-6 sm:p-8">
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4">
+        <div>
+          <h4 class="text-xl font-bold text-white">Bachelor of Technology (B.Tech)</h4>
+          <p class="text-indigo-400 font-medium text-sm">Computer Science & Engineering</p>
+        </div>
+        <span class="text-xs font-mono text-zinc-400 px-3 py-1 bg-zinc-800/80 border border-zinc-700/60 rounded-md self-start sm:self-auto">
+          Graduation: Class of 2031
+        </span>
+      </div>
+      <p class="text-sm text-zinc-400 leading-relaxed mb-6">
+        Undergraduate education covering core computer science principles, computational complexity, modern software design, and scalable systems development.
+      </p>
+      <div>
+        <h5 class="text-xs font-semibold text-zinc-300 uppercase tracking-wider mb-3">Key Coursework</h5>
+        <div class="flex flex-wrap gap-2 text-xs text-zinc-300">
+          <span class="px-3 py-1 bg-zinc-800 border border-zinc-700/60 rounded-md">Data Structures & Algorithms</span>
+          <span class="px-3 py-1 bg-zinc-800 border border-zinc-700/60 rounded-md">Object-Oriented Programming (OOP)</span>
+          <span class="px-3 py-1 bg-zinc-800 border border-zinc-700/60 rounded-md">Database Management Systems (DBMS)</span>
+          <span class="px-3 py-1 bg-zinc-800 border border-zinc-700/60 rounded-md">Operating Systems</span>
+          <span class="px-3 py-1 bg-zinc-800 border border-zinc-700/60 rounded-md">Computer Networks</span>
+          <span class="px-3 py-1 bg-zinc-800 border border-zinc-700/60 rounded-md">Software Engineering Principles</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Technical Skills Section -->
+  <section id="skills" class="py-20 px-6 max-w-6xl mx-auto border-b border-zinc-800/60">
+    <h2 class="text-xs font-mono uppercase tracking-wider text-indigo-400 mb-2">Capabilities</h2>
+    <h3 class="text-2xl sm:text-3xl font-bold text-white mb-8">Technical Skills</h3>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <!-- Languages -->
+      <div class="bg-zinc-900/40 border border-zinc-800 p-6 rounded-xl">
+        <h4 class="text-base font-semibold text-white mb-4">Programming Languages</h4>
+        <div class="flex flex-wrap gap-2">
+          <span class="px-3 py-1.5 text-xs font-medium text-zinc-200 bg-zinc-800/80 border border-zinc-700/70 rounded-lg">C++</span>
+          <span class="px-3 py-1.5 text-xs font-medium text-zinc-200 bg-zinc-800/80 border border-zinc-700/70 rounded-lg">Python</span>
+          <span class="px-3 py-1.5 text-xs font-medium text-zinc-200 bg-zinc-800/80 border border-zinc-700/70 rounded-lg">JavaScript (ES6+)</span>
+          <span class="px-3 py-1.5 text-xs font-medium text-zinc-200 bg-zinc-800/80 border border-zinc-700/70 rounded-lg">TypeScript</span>
+          <span class="px-3 py-1.5 text-xs font-medium text-zinc-200 bg-zinc-800/80 border border-zinc-700/70 rounded-lg">SQL</span>
+          <span class="px-3 py-1.5 text-xs font-medium text-zinc-200 bg-zinc-800/80 border border-zinc-700/70 rounded-lg">HTML5 / CSS3</span>
+        </div>
+      </div>
+      <!-- Web / Frameworks -->
+      <div class="bg-zinc-900/40 border border-zinc-800 p-6 rounded-xl">
+        <h4 class="text-base font-semibold text-white mb-4">Web & Frameworks</h4>
+        <div class="flex flex-wrap gap-2">
+          <span class="px-3 py-1.5 text-xs font-medium text-zinc-200 bg-zinc-800/80 border border-zinc-700/70 rounded-lg">React.js</span>
+          <span class="px-3 py-1.5 text-xs font-medium text-zinc-200 bg-zinc-800/80 border border-zinc-700/70 rounded-lg">Next.js</span>
+          <span class="px-3 py-1.5 text-xs font-medium text-zinc-200 bg-zinc-800/80 border border-zinc-700/70 rounded-lg">Node.js</span>
+          <span class="px-3 py-1.5 text-xs font-medium text-zinc-200 bg-zinc-800/80 border border-zinc-700/70 rounded-lg">Express.js</span>
+          <span class="px-3 py-1.5 text-xs font-medium text-zinc-200 bg-zinc-800/80 border border-zinc-700/70 rounded-lg">Tailwind CSS</span>
+          <span class="px-3 py-1.5 text-xs font-medium text-zinc-200 bg-zinc-800/80 border border-zinc-700/70 rounded-lg">REST APIs</span>
+        </div>
+      </div>
+      <!-- Tools -->
+      <div class="bg-zinc-900/40 border border-zinc-800 p-6 rounded-xl">
+        <h4 class="text-base font-semibold text-white mb-4">Developer Tools</h4>
+        <div class="flex flex-wrap gap-2">
+          <span class="px-3 py-1.5 text-xs font-medium text-zinc-200 bg-zinc-800/80 border border-zinc-700/70 rounded-lg">Git & GitHub</span>
+          <span class="px-3 py-1.5 text-xs font-medium text-zinc-200 bg-zinc-800/80 border border-zinc-700/70 rounded-lg">VS Code</span>
+          <span class="px-3 py-1.5 text-xs font-medium text-zinc-200 bg-zinc-800/80 border border-zinc-700/70 rounded-lg">Linux / Bash</span>
+          <span class="px-3 py-1.5 text-xs font-medium text-zinc-200 bg-zinc-800/80 border border-zinc-700/70 rounded-lg">Docker</span>
+          <span class="px-3 py-1.5 text-xs font-medium text-zinc-200 bg-zinc-800/80 border border-zinc-700/70 rounded-lg">Postman</span>
+          <span class="px-3 py-1.5 text-xs font-medium text-zinc-200 bg-zinc-800/80 border border-zinc-700/70 rounded-lg">Vite</span>
+        </div>
+      </div>
+      <!-- Core Concepts -->
+      <div class="bg-zinc-900/40 border border-zinc-800 p-6 rounded-xl">
+        <h4 class="text-base font-semibold text-white mb-4">Core Concepts</h4>
+        <div class="flex flex-wrap gap-2">
+          <span class="px-3 py-1.5 text-xs font-medium text-zinc-200 bg-zinc-800/80 border border-zinc-700/70 rounded-lg">Data Structures & Algorithms</span>
+          <span class="px-3 py-1.5 text-xs font-medium text-zinc-200 bg-zinc-800/80 border border-zinc-700/70 rounded-lg">Object-Oriented Programming (OOP)</span>
+          <span class="px-3 py-1.5 text-xs font-medium text-zinc-200 bg-zinc-800/80 border border-zinc-700/70 rounded-lg">DBMS & Relational Modeling</span>
+          <span class="px-3 py-1.5 text-xs font-medium text-zinc-200 bg-zinc-800/80 border border-zinc-700/70 rounded-lg">Operating Systems Basics</span>
+          <span class="px-3 py-1.5 text-xs font-medium text-zinc-200 bg-zinc-800/80 border border-zinc-700/70 rounded-lg">Computer Networks</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Projects Section -->
+  <section id="projects" class="py-20 px-6 max-w-6xl mx-auto border-b border-zinc-800/60">
+    <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-8">
+      <div>
+        <h2 class="text-xs font-mono uppercase tracking-wider text-indigo-400 mb-2">Featured Work</h2>
+        <h3 class="text-2xl sm:text-3xl font-bold text-white">Projects</h3>
+      </div>
+      <p class="text-xs text-zinc-400">Selected personal & academic software projects</p>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <!-- Project 1 -->
+      <div class="bg-zinc-900/50 border border-zinc-800/80 rounded-xl p-6 flex flex-col justify-between hover:border-zinc-700 transition-colors">
+        <div>
+          <div class="flex items-center justify-between text-xs text-zinc-400 mb-3">
+            <span>Systems & Algorithms</span>
+            <span class="text-indigo-400 font-mono">React · TypeScript</span>
+          </div>
+          <h4 class="text-xl font-bold text-white mb-2">AlgoVisualizer</h4>
+          <p class="text-sm text-zinc-400 leading-relaxed mb-4">
+            Interactive sorting and pathfinding visualizer with real-time speed adjustments, custom array distributions, and step-by-step state playback.
+          </p>
+        </div>
+        <div>
+          <div class="flex flex-wrap gap-1.5 mb-5 text-xs text-zinc-300">
+            <span class="px-2 py-0.5 bg-zinc-800/80 rounded border border-zinc-700/50">React</span>
+            <span class="px-2 py-0.5 bg-zinc-800/80 rounded border border-zinc-700/50">TypeScript</span>
+            <span class="px-2 py-0.5 bg-zinc-800/80 rounded border border-zinc-700/50">Tailwind CSS</span>
+            <span class="px-2 py-0.5 bg-zinc-800/80 rounded border border-zinc-700/50">Canvas API</span>
+          </div>
+          <div class="flex items-center gap-3 pt-3 border-t border-zinc-800/60">
+            <a href="https://github.com/paragpareta" target="_blank" rel="noopener noreferrer" class="text-xs font-medium text-zinc-300 hover:text-white inline-flex items-center gap-1.5 transition-colors">
+              <i data-lucide="github" class="w-3.5 h-3.5"></i> Source Code
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Project 2 -->
+      <div class="bg-zinc-900/50 border border-zinc-800/80 rounded-xl p-6 flex flex-col justify-between hover:border-zinc-700 transition-colors">
+        <div>
+          <div class="flex items-center justify-between text-xs text-zinc-400 mb-3">
+            <span>Full Stack</span>
+            <span class="text-indigo-400 font-mono">React · Node.js</span>
+          </div>
+          <h4 class="text-xl font-bold text-white mb-2">CloudDesk Productivity Hub</h4>
+          <p class="text-sm text-zinc-400 leading-relaxed mb-4">
+            Full-stack workspace organizer featuring Kanban boards, markdown notes, deadline tracking, and local-first data caching.
+          </p>
+        </div>
+        <div>
+          <div class="flex flex-wrap gap-1.5 mb-5 text-xs text-zinc-300">
+            <span class="px-2 py-0.5 bg-zinc-800/80 rounded border border-zinc-700/50">React</span>
+            <span class="px-2 py-0.5 bg-zinc-800/80 rounded border border-zinc-700/50">Node.js</span>
+            <span class="px-2 py-0.5 bg-zinc-800/80 rounded border border-zinc-700/50">Express</span>
+            <span class="px-2 py-0.5 bg-zinc-800/80 rounded border border-zinc-700/50">SQLite</span>
+          </div>
+          <div class="flex items-center gap-3 pt-3 border-t border-zinc-800/60">
+            <a href="https://github.com/paragpareta" target="_blank" rel="noopener noreferrer" class="text-xs font-medium text-zinc-300 hover:text-white inline-flex items-center gap-1.5 transition-colors">
+              <i data-lucide="github" class="w-3.5 h-3.5"></i> Source Code
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Project 3 -->
+      <div class="bg-zinc-900/50 border border-zinc-800/80 rounded-xl p-6 flex flex-col justify-between hover:border-zinc-700 transition-colors">
+        <div>
+          <div class="flex items-center justify-between text-xs text-zinc-400 mb-3">
+            <span>Full Stack</span>
+            <span class="text-indigo-400 font-mono">Python · Flask</span>
+          </div>
+          <h4 class="text-xl font-bold text-white mb-2">DevConnect</h4>
+          <p class="text-sm text-zinc-400 leading-relaxed mb-4">
+            Developer platform for sharing syntax-highlighted code snippets, peer reviews, and interactive programming discussions.
+          </p>
+        </div>
+        <div>
+          <div class="flex flex-wrap gap-1.5 mb-5 text-xs text-zinc-300">
+            <span class="px-2 py-0.5 bg-zinc-800/80 rounded border border-zinc-700/50">Python</span>
+            <span class="px-2 py-0.5 bg-zinc-800/80 rounded border border-zinc-700/50">Flask</span>
+            <span class="px-2 py-0.5 bg-zinc-800/80 rounded border border-zinc-700/50">SQLite</span>
+            <span class="px-2 py-0.5 bg-zinc-800/80 rounded border border-zinc-700/50">JavaScript</span>
+          </div>
+          <div class="flex items-center gap-3 pt-3 border-t border-zinc-800/60">
+            <a href="https://github.com/paragpareta" target="_blank" rel="noopener noreferrer" class="text-xs font-medium text-zinc-300 hover:text-white inline-flex items-center gap-1.5 transition-colors">
+              <i data-lucide="github" class="w-3.5 h-3.5"></i> Source Code
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Project 4 -->
+      <div class="bg-zinc-900/50 border border-zinc-800/80 rounded-xl p-6 flex flex-col justify-between hover:border-zinc-700 transition-colors">
+        <div>
+          <div class="flex items-center justify-between text-xs text-zinc-400 mb-3">
+            <span>Web Tools</span>
+            <span class="text-indigo-400 font-mono">JavaScript · Web APIs</span>
+          </div>
+          <h4 class="text-xl font-bold text-white mb-2">QuickDoc Editor</h4>
+          <p class="text-sm text-zinc-400 leading-relaxed mb-4">
+            Fast, browser-based markdown editor with synchronized dual-pane preview, statistics counter, and PDF/HTML export.
+          </p>
+        </div>
+        <div>
+          <div class="flex flex-wrap gap-1.5 mb-5 text-xs text-zinc-300">
+            <span class="px-2 py-0.5 bg-zinc-800/80 rounded border border-zinc-700/50">JavaScript</span>
+            <span class="px-2 py-0.5 bg-zinc-800/80 rounded border border-zinc-700/50">HTML5</span>
+            <span class="px-2 py-0.5 bg-zinc-800/80 rounded border border-zinc-700/50">Tailwind CSS</span>
+            <span class="px-2 py-0.5 bg-zinc-800/80 rounded border border-zinc-700/50">Web APIs</span>
+          </div>
+          <div class="flex items-center gap-3 pt-3 border-t border-zinc-800/60">
+            <a href="https://github.com/paragpareta" target="_blank" rel="noopener noreferrer" class="text-xs font-medium text-zinc-300 hover:text-white inline-flex items-center gap-1.5 transition-colors">
+              <i data-lucide="github" class="w-3.5 h-3.5"></i> Source Code
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Contact Section -->
+  <section id="contact" class="py-20 px-6 max-w-6xl mx-auto">
+    <h2 class="text-xs font-mono uppercase tracking-wider text-indigo-400 mb-2">Get In Touch</h2>
+    <h3 class="text-2xl sm:text-3xl font-bold text-white mb-8">Contact</h3>
+    
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-10">
+      <!-- Contact Info -->
+      <div class="space-y-6">
+        <p class="text-zinc-300 leading-relaxed text-sm sm:text-base">
+          I am actively seeking internship opportunities, collaborative open-source projects, and engineering conversations. Feel free to reach out directly via email or connect through my profiles.
+        </p>
+
+        <div class="space-y-3">
+          <!-- Email link -->
+          <a href="mailto:paragpareta@gmail.com" class="flex items-center gap-3 p-3.5 bg-zinc-900/60 border border-zinc-800 rounded-lg hover:border-zinc-700 transition-colors group">
+            <i data-lucide="mail" class="w-5 h-5 text-indigo-400"></i>
+            <div>
+              <p class="text-xs text-zinc-400">Email Address</p>
+              <p class="text-sm font-medium text-zinc-200 group-hover:text-white transition-colors">paragpareta@gmail.com</p>
+            </div>
+          </a>
+
+          <!-- GitHub link -->
+          <a href="https://github.com/paragpareta" target="_blank" rel="noopener noreferrer" class="flex items-center gap-3 p-3.5 bg-zinc-900/60 border border-zinc-800 rounded-lg hover:border-zinc-700 transition-colors group">
+            <i data-lucide="github" class="w-5 h-5 text-indigo-400"></i>
+            <div>
+              <p class="text-xs text-zinc-400">GitHub Profile</p>
+              <p class="text-sm font-medium text-zinc-200 group-hover:text-white transition-colors">github.com/paragpareta</p>
+            </div>
+          </a>
+
+          <!-- LinkedIn link -->
+          <a href="https://linkedin.com/in/paragpareta" target="_blank" rel="noopener noreferrer" class="flex items-center gap-3 p-3.5 bg-zinc-900/60 border border-zinc-800 rounded-lg hover:border-zinc-700 transition-colors group">
+            <i data-lucide="linkedin" class="w-5 h-5 text-indigo-400"></i>
+            <div>
+              <p class="text-xs text-zinc-400">LinkedIn Profile</p>
+              <p class="text-sm font-medium text-zinc-200 group-hover:text-white transition-colors">linkedin.com/in/paragpareta</p>
+            </div>
+          </a>
+        </div>
+      </div>
+
+      <!-- Message Form UI -->
+      <div class="bg-zinc-900/60 border border-zinc-800 rounded-xl p-6 sm:p-8">
+        <h4 class="text-lg font-bold text-white mb-4">Send a Message</h4>
+        <form onsubmit="event.preventDefault(); window.location.href='mailto:paragpareta@gmail.com?subject=' + encodeURIComponent(document.getElementById('form-subject').value || 'Hello Parag') + '&body=' + encodeURIComponent('From: ' + document.getElementById('form-name').value + ' (' + document.getElementById('form-email').value + ')\\n\\n' + document.getElementById('form-msg').value);" class="space-y-4">
+          <div>
+            <label class="block text-xs font-medium text-zinc-400 mb-1.5" for="form-name">Your Name</label>
+            <input required id="form-name" type="text" placeholder="John Doe" class="w-full px-3.5 py-2.5 bg-zinc-950 border border-zinc-800 rounded-lg text-sm text-zinc-200 focus:outline-none focus:border-indigo-500 transition-colors" />
+          </div>
+          <div>
+            <label class="block text-xs font-medium text-zinc-400 mb-1.5" for="form-email">Your Email</label>
+            <input required id="form-email" type="email" placeholder="john@example.com" class="w-full px-3.5 py-2.5 bg-zinc-950 border border-zinc-800 rounded-lg text-sm text-zinc-200 focus:outline-none focus:border-indigo-500 transition-colors" />
+          </div>
+          <div>
+            <label class="block text-xs font-medium text-zinc-400 mb-1.5" for="form-subject">Subject</label>
+            <input id="form-subject" type="text" placeholder="Internship opportunity / Collaboration" class="w-full px-3.5 py-2.5 bg-zinc-950 border border-zinc-800 rounded-lg text-sm text-zinc-200 focus:outline-none focus:border-indigo-500 transition-colors" />
+          </div>
+          <div>
+            <label class="block text-xs font-medium text-zinc-400 mb-1.5" for="form-msg">Message</label>
+            <textarea required id="form-msg" rows="4" placeholder="Hi Parag, let's connect regarding..." class="w-full px-3.5 py-2.5 bg-zinc-950 border border-zinc-800 rounded-lg text-sm text-zinc-200 focus:outline-none focus:border-indigo-500 transition-colors resize-none"></textarea>
+          </div>
+          <button type="submit" class="w-full py-3 px-4 bg-indigo-600 hover:bg-indigo-500 text-white font-semibold text-sm rounded-lg transition-colors shadow-sm flex items-center justify-center gap-2">
+            <span>Send via Email Client</span>
+            <i data-lucide="send" class="w-4 h-4"></i>
+          </button>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="py-8 px-6 border-t border-zinc-800/60 max-w-6xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-zinc-500">
+    <p>© 2026 Parag Pareta. All rights reserved.</p>
+    <p>Designed with dark mode aesthetics & Tailwind CSS.</p>
+  </footer>
+
+  <script>
+    // Initialize Lucide icons
+    lucide.createIcons();
+  </script>
+</body>
+</html>
