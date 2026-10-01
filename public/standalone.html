@@ -29,9 +29,27 @@
   <style>
     body { font-family: 'Plus Jakarta Sans', sans-serif; }
     code, pre { font-family: 'JetBrains Mono', monospace; }
+    .scroll-reveal {
+      opacity: 0;
+      transform: translateY(24px);
+      transition: opacity 0.65s cubic-bezier(0.16, 1, 0.3, 1), transform 0.65s cubic-bezier(0.16, 1, 0.3, 1);
+      will-change: opacity, transform;
+    }
+    .scroll-reveal.revealed {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .delay-75 { transition-delay: 75ms; }
+    .delay-100 { transition-delay: 100ms; }
+    .delay-150 { transition-delay: 150ms; }
+    .delay-200 { transition-delay: 200ms; }
+    .delay-250 { transition-delay: 250ms; }
   </style>
 </head>
 <body class="bg-zinc-950 text-zinc-100 antialiased selection:bg-indigo-500/30 selection:text-indigo-200">
+
+  <!-- Fixed Top Scroll Progress Bar -->
+  <div id="scroll-progress-bar" class="fixed top-0 left-0 h-[2.5px] bg-gradient-to-r from-indigo-500 via-purple-500 to-emerald-400 z-50 transition-all duration-75 origin-left" style="width: 0%"></div>
 
   <!-- Sticky Top Navigation -->
   <header class="sticky top-0 z-50 backdrop-blur-md bg-zinc-950/85 border-b border-zinc-800/80">
@@ -44,6 +62,7 @@
         <a href="#about" class="hover:text-white transition-colors">About</a>
         <a href="#education" class="hover:text-white transition-colors">Education</a>
         <a href="#skills" class="hover:text-white transition-colors">Skills</a>
+        <a href="#learning" class="hover:text-white transition-colors">Learning</a>
         <a href="#projects" class="hover:text-white transition-colors">Projects</a>
         <a href="#contact" class="hover:text-white transition-colors">Contact</a>
       </nav>
@@ -56,7 +75,7 @@
   </header>
 
   <!-- Hero Section -->
-  <section id="home" class="py-24 md:py-32 px-6 max-w-6xl mx-auto border-b border-zinc-800/60">
+  <section id="home" class="scroll-reveal py-24 md:py-32 px-6 max-w-6xl mx-auto border-b border-zinc-800/60">
     <div class="max-w-3xl">
       <div class="inline-flex items-center gap-2 px-3 py-1 text-xs font-medium text-indigo-400 bg-indigo-950/40 border border-indigo-800/60 rounded-full mb-6">
         <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
@@ -83,11 +102,11 @@
   </section>
 
   <!-- About Section -->
-  <section id="about" class="py-20 px-6 max-w-6xl mx-auto border-b border-zinc-800/60">
+  <section id="about" class="scroll-reveal py-20 px-6 max-w-6xl mx-auto border-b border-zinc-800/60">
     <h2 class="text-xs font-mono uppercase tracking-wider text-indigo-400 mb-2">Background</h2>
     <h3 class="text-2xl sm:text-3xl font-bold text-white mb-6">About Me</h3>
     <div class="grid grid-cols-1 md:grid-cols-2 gap-10 text-zinc-300 leading-relaxed text-sm sm:text-base">
-      <div class="space-y-4">
+      <div class="scroll-reveal delay-75 space-y-4">
         <p>
           I am a dedicated Computer Science undergraduate with a deep curiosity for how software systems operate under the hood. From low-level memory efficiency in C++ to building responsive modern web applications in React and TypeScript, I enjoy the full spectrum of software creation.
         </p>
@@ -95,7 +114,7 @@
           My focus revolves around writing readable, maintainable, and mathematically sound code. Whether analyzing asymptotic complexities in algorithmic puzzles or engineering reliable client-server workflows, I treat software engineering as both a craft and a discipline.
         </p>
       </div>
-      <div class="bg-zinc-900/60 border border-zinc-800 rounded-xl p-6 space-y-4">
+      <div class="scroll-reveal delay-150 bg-zinc-900/60 border border-zinc-800 rounded-xl p-6 space-y-4">
         <h4 class="text-base font-semibold text-white">Engineering Values</h4>
         <ul class="space-y-3 text-sm text-zinc-400">
           <li class="flex items-start gap-2">
@@ -116,10 +135,10 @@
   </section>
 
   <!-- Education Section -->
-  <section id="education" class="py-20 px-6 max-w-6xl mx-auto border-b border-zinc-800/60">
+  <section id="education" class="scroll-reveal py-20 px-6 max-w-6xl mx-auto border-b border-zinc-800/60">
     <h2 class="text-xs font-mono uppercase tracking-wider text-indigo-400 mb-2">Academic Journey</h2>
     <h3 class="text-2xl sm:text-3xl font-bold text-white mb-8">Education</h3>
-    <div class="bg-zinc-900/50 border border-zinc-800/80 rounded-xl p-6 sm:p-8">
+    <div class="scroll-reveal delay-100 bg-zinc-900/50 border border-zinc-800/80 rounded-xl p-6 sm:p-8">
       <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4">
         <div>
           <h4 class="text-xl font-bold text-white">Bachelor of Technology (B.Tech)</h4>
@@ -147,12 +166,12 @@
   </section>
 
   <!-- Technical Skills Section -->
-  <section id="skills" class="py-20 px-6 max-w-6xl mx-auto border-b border-zinc-800/60">
+  <section id="skills" class="scroll-reveal py-20 px-6 max-w-6xl mx-auto border-b border-zinc-800/60">
     <h2 class="text-xs font-mono uppercase tracking-wider text-indigo-400 mb-2">Capabilities</h2>
     <h3 class="text-2xl sm:text-3xl font-bold text-white mb-8">Technical Skills</h3>
     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
       <!-- Languages -->
-      <div class="bg-zinc-900/40 border border-zinc-800 p-6 rounded-xl">
+      <div class="scroll-reveal delay-75 bg-zinc-900/40 border border-zinc-800 p-6 rounded-xl hover:border-zinc-700 transition-colors">
         <h4 class="text-base font-semibold text-white mb-4">Programming Languages</h4>
         <div class="flex flex-wrap gap-2">
           <span class="px-3 py-1.5 text-xs font-medium text-zinc-200 bg-zinc-800/80 border border-zinc-700/70 rounded-lg">C++</span>
@@ -164,7 +183,7 @@
         </div>
       </div>
       <!-- Web / Frameworks -->
-      <div class="bg-zinc-900/40 border border-zinc-800 p-6 rounded-xl">
+      <div class="scroll-reveal delay-150 bg-zinc-900/40 border border-zinc-800 p-6 rounded-xl hover:border-zinc-700 transition-colors">
         <h4 class="text-base font-semibold text-white mb-4">Web & Frameworks</h4>
         <div class="flex flex-wrap gap-2">
           <span class="px-3 py-1.5 text-xs font-medium text-zinc-200 bg-zinc-800/80 border border-zinc-700/70 rounded-lg">React.js</span>
@@ -176,7 +195,7 @@
         </div>
       </div>
       <!-- Tools -->
-      <div class="bg-zinc-900/40 border border-zinc-800 p-6 rounded-xl">
+      <div class="scroll-reveal delay-200 bg-zinc-900/40 border border-zinc-800 p-6 rounded-xl hover:border-zinc-700 transition-colors">
         <h4 class="text-base font-semibold text-white mb-4">Developer Tools</h4>
         <div class="flex flex-wrap gap-2">
           <span class="px-3 py-1.5 text-xs font-medium text-zinc-200 bg-zinc-800/80 border border-zinc-700/70 rounded-lg">Git & GitHub</span>
@@ -188,7 +207,7 @@
         </div>
       </div>
       <!-- Core Concepts -->
-      <div class="bg-zinc-900/40 border border-zinc-800 p-6 rounded-xl">
+      <div class="scroll-reveal delay-250 bg-zinc-900/40 border border-zinc-800 p-6 rounded-xl hover:border-zinc-700 transition-colors">
         <h4 class="text-base font-semibold text-white mb-4">Core Concepts</h4>
         <div class="flex flex-wrap gap-2">
           <span class="px-3 py-1.5 text-xs font-medium text-zinc-200 bg-zinc-800/80 border border-zinc-700/70 rounded-lg">Data Structures & Algorithms</span>
@@ -201,8 +220,73 @@
     </div>
   </section>
 
+  <!-- Currently Learning Section -->
+  <section id="learning" class="scroll-reveal py-20 px-6 max-w-6xl mx-auto border-b border-zinc-800/60">
+    <div class="mb-10">
+      <h2 class="text-xs font-mono uppercase tracking-wider text-indigo-400 mb-2">Growth & Exploration</h2>
+      <h3 class="text-2xl sm:text-3xl font-bold text-white mb-3">Currently Learning</h3>
+      <p class="text-sm text-zinc-400 max-w-2xl leading-relaxed">
+        Engineering is an evolving discipline. Here are the core architectures and systems technologies I am actively studying and prototyping with to expand my algorithmic and engineering depth.
+      </p>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <!-- Item 1: Distributed Systems -->
+      <div class="scroll-reveal delay-75 bg-zinc-900/50 border border-zinc-800/80 rounded-xl p-6 sm:p-7 hover:border-zinc-700 transition-colors flex flex-col justify-between">
+        <div>
+          <div class="flex items-center justify-between text-xs text-zinc-400 mb-3">
+            <span class="inline-flex items-center gap-1.5 text-indigo-400 font-medium">
+              <span class="w-2 h-2 rounded-full bg-indigo-400 animate-pulse"></span>
+              Active Deep Dive
+            </span>
+            <span class="font-mono text-zinc-500">Go · gRPC · Raft</span>
+          </div>
+          <h4 class="text-xl font-bold text-white mb-3">Distributed Systems & Consensus</h4>
+          <p class="text-sm text-zinc-300 leading-relaxed mb-4">
+            Studying how planetary-scale systems maintain fault tolerance, linearizability, and state replication across unreliable networks. Focus areas include the Raft consensus protocol, log replication, partition tolerance (CAP theorem), and low-latency binary serialization using gRPC and Protocol Buffers.
+          </p>
+          <div class="bg-zinc-950/60 border border-zinc-800/70 rounded-lg p-3.5 mb-5 text-xs text-zinc-400 leading-relaxed">
+            <strong class="text-zinc-200 block mb-1">Relevance to my aspirations:</strong>
+            As an aspiring software engineer focused on building resilient backend services, mastering distributed coordination and partition tolerance (CAP theorem) is foundational for designing systems that reliably survive node and network failures.
+          </div>
+        </div>
+        <div class="flex flex-wrap gap-1.5 pt-3 border-t border-zinc-800/60 text-xs text-zinc-400">
+          <span class="px-2.5 py-1 bg-zinc-800/70 border border-zinc-700/60 rounded">Raft Protocol</span>
+          <span class="px-2.5 py-1 bg-zinc-800/70 border border-zinc-700/60 rounded">gRPC & Protobuf</span>
+          <span class="px-2.5 py-1 bg-zinc-800/70 border border-zinc-700/60 rounded">CAP Theorem</span>
+        </div>
+      </div>
+
+      <!-- Item 2: Rust & WebAssembly -->
+      <div class="scroll-reveal delay-150 bg-zinc-900/50 border border-zinc-800/80 rounded-xl p-6 sm:p-7 hover:border-zinc-700 transition-colors flex flex-col justify-between">
+        <div>
+          <div class="flex items-center justify-between text-xs text-zinc-400 mb-3">
+            <span class="inline-flex items-center gap-1.5 text-emerald-400 font-medium">
+              <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+              Hands-on Exploration
+            </span>
+            <span class="font-mono text-zinc-500">Rust · Wasm · Memory Safety</span>
+          </div>
+          <h4 class="text-xl font-bold text-white mb-3">Rust & WebAssembly (Wasm)</h4>
+          <p class="text-sm text-zinc-300 leading-relaxed mb-4">
+            Exploring compile-time memory safety, affine type systems, and borrow semantics to achieve bare-metal computational efficiency without a garbage collector. Compiling compute-heavy data structures and graph algorithms into WebAssembly modules for instant, sandboxed browser execution.
+          </p>
+          <div class="bg-zinc-950/60 border border-zinc-800/70 rounded-lg p-3.5 mb-5 text-xs text-zinc-400 leading-relaxed">
+            <strong class="text-zinc-200 block mb-1">Relevance to my aspirations:</strong>
+            Rust combines the low-level mechanical sympathy of C++ with modern memory guarantees. Integrating WebAssembly into full-stack web applications unlocks high-performance algorithms directly in client viewports.
+          </div>
+        </div>
+        <div class="flex flex-wrap gap-1.5 pt-3 border-t border-zinc-800/60 text-xs text-zinc-400">
+          <span class="px-2.5 py-1 bg-zinc-800/70 border border-zinc-700/60 rounded">Borrow Checker</span>
+          <span class="px-2.5 py-1 bg-zinc-800/70 border border-zinc-700/60 rounded">Wasm Compilation</span>
+          <span class="px-2.5 py-1 bg-zinc-800/70 border border-zinc-700/60 rounded">Zero-Cost Abstractions</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <!-- Projects Section -->
-  <section id="projects" class="py-20 px-6 max-w-6xl mx-auto border-b border-zinc-800/60">
+  <section id="projects" class="scroll-reveal py-20 px-6 max-w-6xl mx-auto border-b border-zinc-800/60">
     <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-8">
       <div>
         <h2 class="text-xs font-mono uppercase tracking-wider text-indigo-400 mb-2">Featured Work</h2>
@@ -213,7 +297,7 @@
 
     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
       <!-- Project 1 -->
-      <div class="bg-zinc-900/50 border border-zinc-800/80 rounded-xl p-6 flex flex-col justify-between hover:border-zinc-700 transition-colors">
+      <div class="scroll-reveal delay-75 bg-zinc-900/50 border border-zinc-800/80 rounded-xl p-6 flex flex-col justify-between hover:border-zinc-700 transition-colors">
         <div>
           <div class="flex items-center justify-between text-xs text-zinc-400 mb-3">
             <span>Systems & Algorithms</span>
@@ -240,7 +324,7 @@
       </div>
 
       <!-- Project 2 -->
-      <div class="bg-zinc-900/50 border border-zinc-800/80 rounded-xl p-6 flex flex-col justify-between hover:border-zinc-700 transition-colors">
+      <div class="scroll-reveal delay-150 bg-zinc-900/50 border border-zinc-800/80 rounded-xl p-6 flex flex-col justify-between hover:border-zinc-700 transition-colors">
         <div>
           <div class="flex items-center justify-between text-xs text-zinc-400 mb-3">
             <span>Full Stack</span>
@@ -267,23 +351,23 @@
       </div>
 
       <!-- Project 3 -->
-      <div class="bg-zinc-900/50 border border-zinc-800/80 rounded-xl p-6 flex flex-col justify-between hover:border-zinc-700 transition-colors">
+      <div class="scroll-reveal delay-200 bg-zinc-900/50 border border-zinc-800/80 rounded-xl p-6 flex flex-col justify-between hover:border-zinc-700 transition-colors">
         <div>
           <div class="flex items-center justify-between text-xs text-zinc-400 mb-3">
             <span>Full Stack</span>
-            <span class="text-indigo-400 font-mono">Python · Flask</span>
+            <span class="text-indigo-400 font-mono">React · Tailwind</span>
           </div>
-          <h4 class="text-xl font-bold text-white mb-2">DevConnect</h4>
+          <h4 class="text-xl font-bold text-white mb-2">DevConnect Peer Network</h4>
           <p class="text-sm text-zinc-400 leading-relaxed mb-4">
-            Developer platform for sharing syntax-highlighted code snippets, peer reviews, and interactive programming discussions.
+            Developer networking prototype with filtered search by tech stack, project collaboration invites, and clean profile cards.
           </p>
         </div>
         <div>
           <div class="flex flex-wrap gap-1.5 mb-5 text-xs text-zinc-300">
-            <span class="px-2 py-0.5 bg-zinc-800/80 rounded border border-zinc-700/50">Python</span>
-            <span class="px-2 py-0.5 bg-zinc-800/80 rounded border border-zinc-700/50">Flask</span>
-            <span class="px-2 py-0.5 bg-zinc-800/80 rounded border border-zinc-700/50">SQLite</span>
+            <span class="px-2 py-0.5 bg-zinc-800/80 rounded border border-zinc-700/50">React</span>
             <span class="px-2 py-0.5 bg-zinc-800/80 rounded border border-zinc-700/50">JavaScript</span>
+            <span class="px-2 py-0.5 bg-zinc-800/80 rounded border border-zinc-700/50">Tailwind CSS</span>
+            <span class="px-2 py-0.5 bg-zinc-800/80 rounded border border-zinc-700/50">Lucide Icons</span>
           </div>
           <div class="flex items-center gap-3 pt-3 border-t border-zinc-800/60">
             <a href="https://github.com/paragpareta" target="_blank" rel="noopener noreferrer" class="text-xs font-medium text-zinc-300 hover:text-white inline-flex items-center gap-1.5 transition-colors">
@@ -294,23 +378,23 @@
       </div>
 
       <!-- Project 4 -->
-      <div class="bg-zinc-900/50 border border-zinc-800/80 rounded-xl p-6 flex flex-col justify-between hover:border-zinc-700 transition-colors">
+      <div class="scroll-reveal delay-250 bg-zinc-900/50 border border-zinc-800/80 rounded-xl p-6 flex flex-col justify-between hover:border-zinc-700 transition-colors">
         <div>
           <div class="flex items-center justify-between text-xs text-zinc-400 mb-3">
             <span>Web Tools</span>
-            <span class="text-indigo-400 font-mono">JavaScript · Web APIs</span>
+            <span class="text-indigo-400 font-mono">Python · Flask</span>
           </div>
-          <h4 class="text-xl font-bold text-white mb-2">QuickDoc Editor</h4>
+          <h4 class="text-xl font-bold text-white mb-2">QuickDoc API Explorer</h4>
           <p class="text-sm text-zinc-400 leading-relaxed mb-4">
-            Fast, browser-based markdown editor with synchronized dual-pane preview, statistics counter, and PDF/HTML export.
+            Lightweight REST endpoint testing tool featuring automatic JSON formatting, status code inspection, and request history.
           </p>
         </div>
         <div>
           <div class="flex flex-wrap gap-1.5 mb-5 text-xs text-zinc-300">
-            <span class="px-2 py-0.5 bg-zinc-800/80 rounded border border-zinc-700/50">JavaScript</span>
-            <span class="px-2 py-0.5 bg-zinc-800/80 rounded border border-zinc-700/50">HTML5</span>
-            <span class="px-2 py-0.5 bg-zinc-800/80 rounded border border-zinc-700/50">Tailwind CSS</span>
-            <span class="px-2 py-0.5 bg-zinc-800/80 rounded border border-zinc-700/50">Web APIs</span>
+            <span class="px-2 py-0.5 bg-zinc-800/80 rounded border border-zinc-700/50">Python</span>
+            <span class="px-2 py-0.5 bg-zinc-800/80 rounded border border-zinc-700/50">Flask</span>
+            <span class="px-2 py-0.5 bg-zinc-800/80 rounded border border-zinc-700/50">HTML5/JS</span>
+            <span class="px-2 py-0.5 bg-zinc-800/80 rounded border border-zinc-700/50">REST</span>
           </div>
           <div class="flex items-center gap-3 pt-3 border-t border-zinc-800/60">
             <a href="https://github.com/paragpareta" target="_blank" rel="noopener noreferrer" class="text-xs font-medium text-zinc-300 hover:text-white inline-flex items-center gap-1.5 transition-colors">
@@ -323,13 +407,13 @@
   </section>
 
   <!-- Contact Section -->
-  <section id="contact" class="py-20 px-6 max-w-6xl mx-auto">
+  <section id="contact" class="scroll-reveal py-20 px-6 max-w-6xl mx-auto">
     <h2 class="text-xs font-mono uppercase tracking-wider text-indigo-400 mb-2">Get In Touch</h2>
     <h3 class="text-2xl sm:text-3xl font-bold text-white mb-8">Contact</h3>
     
     <div class="grid grid-cols-1 md:grid-cols-2 gap-10">
       <!-- Contact Info -->
-      <div class="space-y-6">
+      <div class="scroll-reveal delay-75 space-y-6">
         <p class="text-zinc-300 leading-relaxed text-sm sm:text-base">
           I am actively seeking internship opportunities, collaborative open-source projects, and engineering conversations. Feel free to reach out directly via email or connect through my profiles.
         </p>
@@ -365,9 +449,9 @@
       </div>
 
       <!-- Message Form UI -->
-      <div class="bg-zinc-900/60 border border-zinc-800 rounded-xl p-6 sm:p-8">
+      <div class="scroll-reveal delay-150 bg-zinc-900/60 border border-zinc-800 rounded-xl p-6 sm:p-8">
         <h4 class="text-lg font-bold text-white mb-4">Send a Message</h4>
-        <form onsubmit="event.preventDefault(); window.location.href='mailto:paragpareta@gmail.com?subject=' + encodeURIComponent(document.getElementById('form-subject').value || 'Hello Parag') + '&body=' + encodeURIComponent('From: ' + document.getElementById('form-name').value + ' (' + document.getElementById('form-email').value + ')\\n\\n' + document.getElementById('form-msg').value);" class="space-y-4">
+        <form onsubmit="event.preventDefault(); window.location.href='mailto:paragpareta@gmail.com?subject=' + encodeURIComponent(document.getElementById('form-subject').value || 'Hello Parag') + '&body=' + encodeURIComponent('From: ' + document.getElementById('form-name').value + ' (' + document.getElementById('form-email').value + ')\n\n' + document.getElementById('form-msg').value);" class="space-y-4">
           <div>
             <label class="block text-xs font-medium text-zinc-400 mb-1.5" for="form-name">Your Name</label>
             <input required id="form-name" type="text" placeholder="John Doe" class="w-full px-3.5 py-2.5 bg-zinc-950 border border-zinc-800 rounded-lg text-sm text-zinc-200 focus:outline-none focus:border-indigo-500 transition-colors" />
@@ -399,9 +483,48 @@
     <p>Designed with dark mode aesthetics & Tailwind CSS.</p>
   </footer>
 
+  <!-- Floating Scroll To Top Button -->
+  <button id="scroll-to-top-btn" onclick="window.scrollTo({ top: 0, behavior: 'smooth' })" class="fixed bottom-6 right-6 z-40 p-3 bg-zinc-900/90 border border-zinc-700/80 rounded-full text-indigo-400 hover:text-white hover:bg-zinc-800 shadow-2xl backdrop-blur-md opacity-0 pointer-events-none transition-all duration-300 group" aria-label="Scroll to top">
+    <i data-lucide="arrow-up" class="w-4 h-4 group-hover:-translate-y-0.5 transition-transform"></i>
+  </button>
+
   <script>
     // Initialize Lucide icons
     lucide.createIcons();
+
+    // Scroll progress bar and scroll to top button
+    const topBtn = document.getElementById('scroll-to-top-btn');
+    window.addEventListener('scroll', () => {
+      const winScroll = document.documentElement.scrollTop || document.body.scrollTop;
+      const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+      const scrolled = height > 0 ? (winScroll / height) * 100 : 0;
+      const bar = document.getElementById('scroll-progress-bar');
+      if (bar) bar.style.width = scrolled + '%';
+
+      if (topBtn) {
+        if (winScroll > 380) {
+          topBtn.classList.remove('opacity-0', 'pointer-events-none');
+          topBtn.classList.add('opacity-100', 'pointer-events-auto');
+        } else {
+          topBtn.classList.remove('opacity-100', 'pointer-events-auto');
+          topBtn.classList.add('opacity-0', 'pointer-events-none');
+        }
+      }
+    }, { passive: true });
+
+    // IntersectionObserver for scroll animations
+    const revealObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('revealed');
+        }
+      });
+    }, {
+      threshold: 0.08,
+      rootMargin: '0px 0px -40px 0px'
+    });
+
+    document.querySelectorAll('.scroll-reveal').forEach(el => revealObserver.observe(el));
   </script>
 </body>
 </html>
