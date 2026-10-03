@@ -25,8 +25,10 @@ import {
   Moon,
   Sparkles,
   ChevronRight,
-  Target,
-  BookOpen
+  BookOpen,
+  Compass,
+  Layers,
+  GraduationCap
 } from 'lucide-react';
 
 interface SubjectInfo {
@@ -36,7 +38,7 @@ interface SubjectInfo {
   headline: string;
   icon: React.ElementType;
   description: string;
-  weight: number;
+  accent: string;
   topics: string[];
 }
 
@@ -63,21 +65,21 @@ export default function App() {
   // Scroll animations & progress
   const { scrollY, scrollYProgress } = useScroll();
   const smoothProgress = useSpring(scrollYProgress, {
-    stiffness: 100,
-    damping: 24,
+    stiffness: 90,
+    damping: 22,
     restDelta: 0.001
   });
 
-  // Top level transforms for animations
-  const orbY1 = useTransform(scrollY, [0, 1500], [0, -120]);
-  const orbY2 = useTransform(scrollY, [0, 1500], [0, 100]);
+  // Top level transforms for parallax animations
+  const orbY1 = useTransform(scrollY, [0, 1600], [0, -140]);
+  const orbY2 = useTransform(scrollY, [0, 1600], [0, 110]);
+  const watermarkX = useTransform(scrollY, [0, 1200], [0, -80]);
   const circleProgressOffset = useTransform(smoothProgress, [0, 1], [125.6, 0]);
-  const marqueeX = useTransform(scrollY, [0, 2000], [0, -250]);
 
   // Track active section and scroll-to-top button
   useEffect(() => {
     const handleScroll = () => {
-      setShowScrollTop(window.scrollY > 320);
+      setShowScrollTop(window.scrollY > 300);
       const sections = ['home', 'about', 'subjects', 'contact'];
       const scrollPosition = window.scrollY + 220;
 
@@ -103,7 +105,7 @@ export default function App() {
     setIsMobileMenuOpen(false);
     const target = document.getElementById(id);
     if (target) {
-      const navOffset = 76;
+      const navOffset = 80;
       const elementPosition = target.getBoundingClientRect().top;
       const offsetPosition = elementPosition + window.pageYOffset - navOffset;
 
@@ -143,14 +145,14 @@ export default function App() {
       name: 'Physics',
       headline: 'Mechanics, Electromagnetism & Modern Physics',
       icon: Atom,
-      description: 'Strengthening intuition for physical systems through rigorous numericals and calculus-based formulations.',
-      weight: 100,
+      accent: 'from-violet-500 to-indigo-600',
+      description: 'Strengthening intuition for physical systems through rigorous numerical problem sets, vector mechanics, and calculus formulations.',
       topics: [
-        'Kinematics & Newton\'s Laws of Motion',
+        'Kinematics, Newton\'s Laws & Work-Energy',
         'Rotational Dynamics & Moment of Inertia',
-        'Work, Energy & Power Theorem',
+        'Gravitation & Simple Harmonic Motion (SHM)',
         'Electrostatics & Current Electricity',
-        'Electromagnetic Induction & Alternating Currents',
+        'Electromagnetic Induction & Alternating Current',
         'Ray & Wave Optics',
         'Modern Physics & Nuclear Structure'
       ]
@@ -161,15 +163,15 @@ export default function App() {
       name: 'Mathematics',
       headline: 'Calculus, Algebra & Coordinate Geometry',
       icon: Binary,
-      description: 'Developing deductive rigor and multi-step computational stamina across pure and analytical mathematics.',
-      weight: 100,
+      accent: 'from-indigo-500 to-cyan-500',
+      description: 'Developing high deductive logic, algebraic dexterity, and multi-step computational stamina across real and complex domains.',
       topics: [
         'Differential & Integral Calculus',
-        'Differential Equations & Applications',
-        'Coordinate Geometry & Conic Sections',
-        'Vectors & 3D Spatial Geometry',
-        'Matrices, Determinants & System of Equations',
-        'Complex Numbers & Quadratic Theory',
+        'Differential Equations & Applications of Derivatives',
+        'Coordinate Geometry (Circles, Parabola, Ellipse, Hyperbola)',
+        'Vectors & 3D Analytical Geometry',
+        'Matrices, Determinants & Linear Systems',
+        'Complex Numbers & Quadratic Equations',
         'Permutations, Combinations & Probability'
       ]
     },
@@ -179,27 +181,27 @@ export default function App() {
       name: 'Chemistry',
       headline: 'Physical, Organic & Inorganic Principles',
       icon: FlaskConical,
-      description: 'Balancing mathematical stoichiometry with molecular orbital logic and systematic reaction mechanisms.',
-      weight: 100,
+      accent: 'from-fuchsia-500 to-violet-600',
+      description: 'Balancing mathematical stoichiometry and thermodynamics with electron displacement effects, reaction mechanisms, and periodic bonding trends.',
       topics: [
         'Chemical Energetics & Thermodynamics',
         'Chemical & Ionic Equilibrium',
         'Chemical Kinetics & Electrochemistry',
         'General Organic Chemistry (GOC) Mechanisms',
         'Functional Groups & Hydrocarbon Chemistry',
-        'Periodic Trends & Chemical Bonding Models',
+        'Chemical Bonding & Periodic Table Trends',
         'Coordination Compounds & Metallurgy'
       ]
     }
   ];
 
   const sectionFadeVariant: Variants = {
-    hidden: { opacity: 0, y: 28 },
+    hidden: { opacity: 0, y: 30 },
     visible: {
       opacity: 1,
       y: 0,
       transition: {
-        duration: 0.6,
+        duration: 0.65,
         ease: [0.21, 0.47, 0.32, 0.98]
       }
     }
@@ -209,72 +211,73 @@ export default function App() {
 
   return (
     <div
-      className={`min-h-screen transition-colors duration-300 font-sans antialiased selection:bg-indigo-500/30 selection:text-indigo-200 flex flex-col relative overflow-x-hidden ${
-        isDark ? 'bg-[#0f0f11] text-zinc-100' : 'bg-[#fafaf8] text-zinc-900'
+      className={`min-h-screen transition-colors duration-400 font-sans antialiased selection:bg-violet-500/30 selection:text-violet-200 flex flex-col relative overflow-x-hidden ${
+        isDark ? 'bg-[#08090d] text-zinc-100' : 'bg-[#f8f9fd] text-slate-900'
       }`}
     >
-      {/* Background ambient lighting */}
+      {/* Ambient Radial Glowing Orbs */}
       <div className="fixed inset-0 pointer-events-none z-0 overflow-hidden">
         {/* Subtle dot matrix grid */}
         <div
           className={`absolute inset-0 bg-[size:44px_44px] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_100%)] ${
             isDark
-              ? 'bg-[linear-gradient(to_right,#27272a15_1px,transparent_1px),linear-gradient(to_bottom,#27272a15_1px,transparent_1px)] opacity-70'
-              : 'bg-[linear-gradient(to_right,#e4e4e760_1px,transparent_1px),linear-gradient(to_bottom,#e4e4e760_1px,transparent_1px)] opacity-60'
+              ? 'bg-[linear-gradient(to_right,#22233815_1px,transparent_1px),linear-gradient(to_bottom,#22233815_1px,transparent_1px)] opacity-80'
+              : 'bg-[linear-gradient(to_right,#cbd5e140_1px,transparent_1px),linear-gradient(to_bottom,#cbd5e140_1px,transparent_1px)] opacity-60'
           }`}
         />
 
         <motion.div
           style={{ y: orbY1 }}
-          className={`absolute -top-40 -left-20 w-[450px] h-[450px] rounded-full blur-[100px] pointer-events-none ${
-            isDark ? 'bg-indigo-600/12' : 'bg-indigo-400/15'
+          className={`absolute -top-32 -left-20 w-[550px] h-[550px] rounded-full blur-[130px] pointer-events-none animate-glow-orb ${
+            isDark ? 'bg-violet-600/15' : 'bg-violet-400/20'
           }`}
         />
         <motion.div
           style={{ y: orbY2 }}
-          className={`absolute top-1/2 -right-32 w-[500px] h-[500px] rounded-full blur-[120px] pointer-events-none ${
-            isDark ? 'bg-sky-600/10' : 'bg-sky-400/15'
+          className={`absolute top-1/2 -right-40 w-[600px] h-[600px] rounded-full blur-[140px] pointer-events-none animate-glow-orb ${
+            isDark ? 'bg-cyan-600/12' : 'bg-cyan-400/15'
           }`}
         />
       </div>
 
-      {/* Sticky Top Header with Inexa-style aesthetic */}
+      {/* Sticky Top Header */}
       <header
-        className={`sticky top-0 z-40 backdrop-blur-md border-b transition-colors ${
+        className={`sticky top-0 z-40 backdrop-blur-xl border-b transition-colors duration-300 ${
           isDark
-            ? 'bg-[#0f0f11]/85 border-zinc-800/80'
-            : 'bg-[#fafaf8]/85 border-zinc-200/80 shadow-xs'
+            ? 'bg-[#08090d]/85 border-zinc-800/80 shadow-2xl shadow-black/40'
+            : 'bg-[#f8f9fd]/85 border-slate-200/90 shadow-sm shadow-slate-200/50'
         }`}
       >
-        {/* Animated Top Reading Progress Bar */}
+        {/* Neon Reading Progress Bar */}
         <motion.div
           style={{ scaleX: smoothProgress }}
-          className="absolute bottom-0 left-0 right-0 h-[2px] bg-gradient-to-r from-indigo-500 via-purple-500 to-sky-400 origin-left z-50 pointer-events-none"
+          className="absolute bottom-0 left-0 right-0 h-[2.5px] bg-gradient-to-r from-violet-500 via-indigo-500 to-cyan-400 origin-left z-50 pointer-events-none"
         />
 
         <div className="max-w-6xl mx-auto px-6 h-18 flex items-center justify-between relative z-10">
-          {/* Logo */}
+          {/* Logo Wordmark */}
           <a
             href="#home"
             onClick={(e) => scrollToSection(e, 'home')}
-            className="flex items-center gap-2 group"
+            className="flex items-center gap-2.5 group"
           >
             <div
-              className={`w-9 h-9 rounded-xl flex items-center justify-center font-bold text-sm tracking-tight border transition-transform group-hover:scale-105 ${
+              className={`w-9 h-9 rounded-xl flex items-center justify-center font-bold text-sm tracking-tight border transition-all duration-300 group-hover:scale-105 ${
                 isDark
-                  ? 'bg-zinc-900 border-zinc-800 text-indigo-400 shadow-sm'
-                  : 'bg-white border-zinc-200 text-indigo-600 shadow-xs'
+                  ? 'bg-gradient-to-br from-zinc-900 to-zinc-950 border-violet-500/30 text-violet-400 shadow-sm shadow-violet-500/10'
+                  : 'bg-white border-violet-200 text-violet-600 shadow-md shadow-violet-100'
               }`}
             >
               PP
             </div>
             <div className="flex flex-col">
-              <span className="font-extrabold tracking-tight text-base leading-tight">
-                parag pareta<span className="text-indigo-500">.</span>
+              <span className="font-extrabold tracking-tight text-base leading-tight flex items-center gap-1">
+                parag pareta
+                <span className="inline-block w-1.5 h-1.5 rounded-full bg-violet-500 animate-pulse" />
               </span>
               <span
                 className={`text-[10px] uppercase font-mono tracking-widest ${
-                  isDark ? 'text-zinc-500' : 'text-zinc-400'
+                  isDark ? 'text-zinc-500' : 'text-slate-400'
                 }`}
               >
                 jee aspirant
@@ -282,12 +285,12 @@ export default function App() {
             </div>
           </a>
 
-          {/* Desktop Navigation with Animated Pill */}
+          {/* Floating Pill Navigation with Spring Animation */}
           <nav
             className={`hidden md:flex items-center gap-1 p-1 rounded-full border text-sm font-medium transition-colors ${
               isDark
-                ? 'bg-zinc-900/60 border-zinc-800/80 text-zinc-400'
-                : 'bg-zinc-100/90 border-zinc-200 text-zinc-600'
+                ? 'bg-zinc-900/70 border-zinc-800/80 text-zinc-400 backdrop-blur-md'
+                : 'bg-white/80 border-slate-200 text-slate-600 shadow-sm backdrop-blur-md'
             }`}
           >
             {[
@@ -302,25 +305,25 @@ export default function App() {
                   key={item.id}
                   href={`#${item.id}`}
                   onClick={(e) => scrollToSection(e, item.id)}
-                  className={`relative px-4 py-1.5 rounded-full transition-colors ${
+                  className={`relative px-4 py-1.5 rounded-full transition-all duration-200 ${
                     isActive
                       ? isDark
-                        ? 'text-white'
-                        : 'text-zinc-950 font-semibold'
+                        ? 'text-white font-semibold'
+                        : 'text-violet-950 font-bold'
                       : isDark
                       ? 'hover:text-zinc-200'
-                      : 'hover:text-zinc-900'
+                      : 'hover:text-slate-900'
                   }`}
                 >
                   {isActive && (
                     <motion.div
                       layoutId="nav-active-pill"
-                      className={`absolute inset-0 rounded-full border shadow-xs ${
+                      className={`absolute inset-0 rounded-full border shadow-sm ${
                         isDark
-                          ? 'bg-zinc-800 border-zinc-700/60'
-                          : 'bg-white border-zinc-300'
+                          ? 'bg-zinc-800 border-zinc-700/80 shadow-black/50'
+                          : 'bg-slate-100 border-slate-300 shadow-slate-200'
                       }`}
-                      transition={{ type: 'spring', stiffness: 400, damping: 30 }}
+                      transition={{ type: 'spring', stiffness: 450, damping: 32 }}
                     />
                   )}
                   <span className="relative z-10">{item.label}</span>
@@ -329,39 +332,39 @@ export default function App() {
             })}
           </nav>
 
-          {/* Right Header Actions: Theme Switcher & Let's Talk CTA */}
+          {/* Right Header Actions */}
           <div className="flex items-center gap-3">
             {/* Theme Toggle Button */}
             <button
               onClick={() => setTheme(isDark ? 'light' : 'dark')}
-              className={`p-2 rounded-xl border transition-all active:scale-90 flex items-center justify-center ${
+              className={`p-2.5 rounded-xl border transition-all active:scale-90 flex items-center justify-center ${
                 isDark
-                  ? 'bg-zinc-900 border-zinc-800 text-zinc-300 hover:text-white hover:border-zinc-700'
-                  : 'bg-white border-zinc-200 text-zinc-700 hover:text-black hover:border-zinc-300 shadow-xs'
+                  ? 'bg-zinc-900/80 border-zinc-800 text-amber-400 hover:border-zinc-700 hover:bg-zinc-800'
+                  : 'bg-white border-slate-200 text-violet-600 hover:border-slate-300 hover:bg-slate-50 shadow-sm'
               }`}
               title={isDark ? 'Switch to light mode' : 'Switch to dark mode'}
               aria-label="Toggle color theme"
             >
-              {isDark ? <Sun className="w-4 h-4 text-amber-400" /> : <Moon className="w-4 h-4 text-indigo-600" />}
+              {isDark ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
             </button>
 
-            {/* Inexa Style "Let's Talk" CTA */}
+            {/* Inexa Style "Say Hello" CTA */}
             <a
               href="#contact"
               onClick={(e) => scrollToSection(e, 'contact')}
-              className="hidden sm:inline-flex items-center gap-1.5 px-4 py-2 text-xs font-semibold text-white bg-indigo-600 rounded-xl hover:bg-indigo-500 active:scale-95 transition-all shadow-sm"
+              className="hidden sm:inline-flex items-center gap-1.5 px-4.5 py-2 text-xs font-semibold text-white bg-gradient-to-r from-violet-600 to-indigo-600 hover:from-violet-500 hover:to-indigo-500 active:scale-95 transition-all rounded-xl shadow-md shadow-violet-600/25"
             >
               <span>Say Hello</span>
               <ArrowUpRight className="w-3.5 h-3.5" />
             </a>
 
-            {/* Mobile menu trigger */}
+            {/* Mobile menu hamburger */}
             <button
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
               className={`md:hidden p-2 rounded-xl border transition-colors ${
                 isDark
                   ? 'border-zinc-800 text-zinc-400 hover:text-white'
-                  : 'border-zinc-200 text-zinc-600 hover:text-black'
+                  : 'border-slate-200 text-slate-600 hover:text-black'
               }`}
               aria-label="Toggle navigation menu"
             >
@@ -379,7 +382,7 @@ export default function App() {
               exit={{ opacity: 0, height: 0 }}
               transition={{ duration: 0.25, ease: [0.16, 1, 0.3, 1] }}
               className={`md:hidden border-b px-6 py-4 space-y-2 overflow-hidden ${
-                isDark ? 'bg-[#0f0f11] border-zinc-800' : 'bg-white border-zinc-200'
+                isDark ? 'bg-[#08090d] border-zinc-800' : 'bg-white border-slate-200'
               }`}
             >
               {[
@@ -394,10 +397,10 @@ export default function App() {
                   onClick={(e) => scrollToSection(e, item.id)}
                   className={`block text-sm font-medium py-1.5 transition-colors ${
                     activeNav === item.id
-                      ? 'text-indigo-500 font-semibold'
+                      ? 'text-violet-500 font-semibold'
                       : isDark
                       ? 'text-zinc-300 hover:text-white'
-                      : 'text-zinc-700 hover:text-black'
+                      : 'text-slate-700 hover:text-black'
                   }`}
                 >
                   {item.label}
@@ -408,45 +411,50 @@ export default function App() {
         </AnimatePresence>
       </header>
 
-      {/* Hero Section with Inexa Layout: Giant Outline Watermark + Rotating Badge */}
+      {/* Hero Section with Inexa Layout */}
       <section id="home" className="relative z-10 pt-16 pb-20 md:pt-24 md:pb-32 px-6 max-w-6xl mx-auto w-full overflow-hidden">
-        {/* Giant Inexa-style Outline Typographic Watermark in Background */}
-        <div
-          className={`absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-[12vw] font-black tracking-tighter uppercase select-none pointer-events-none whitespace-nowrap z-0 ${
+        {/* Dynamic Watermark Typographic Stroke */}
+        <motion.div
+          style={{ x: watermarkX }}
+          className={`absolute top-1/2 left-0 -translate-y-1/2 text-[14vw] font-black tracking-tighter uppercase select-none pointer-events-none whitespace-nowrap z-0 ${
             isDark
-              ? 'text-transparent [-webkit-text-stroke:1px_rgba(255,255,255,0.04)]'
-              : 'text-transparent [-webkit-text-stroke:1px_rgba(0,0,0,0.04)]'
+              ? 'text-transparent [-webkit-text-stroke:1.5px_rgba(139,92,246,0.08)]'
+              : 'text-transparent [-webkit-text-stroke:1.5px_rgba(99,102,241,0.08)]'
           }`}
         >
-          JEE & ENGINEERING
-        </div>
+          JEE & IIT ASPIRANT
+        </motion.div>
 
         <div className="relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
-          {/* Left Column: Introductions & Content */}
+          {/* Left Column */}
           <motion.div
             variants={sectionFadeVariant}
             initial="hidden"
             animate="visible"
             className="lg:col-span-7 space-y-6"
           >
-            {/* Status Pill */}
-            <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border text-xs font-medium tracking-wide">
-              <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-              <span className={isDark ? 'text-zinc-300' : 'text-zinc-700'}>
-                Student · Preparing for JEE (India)
-              </span>
+            {/* Status Pill with Neon Dot */}
+            <div
+              className={`inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full border text-xs font-medium tracking-wide shadow-xs ${
+                isDark
+                  ? 'bg-zinc-900/80 border-violet-500/20 text-zinc-300'
+                  : 'bg-white border-violet-200 text-violet-950'
+              }`}
+            >
+              <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse shadow-xs shadow-emerald-400/50" />
+              <span>Student · Preparing for JEE (India)</span>
             </div>
 
             <div className="space-y-3">
-              <h1 className="text-4xl sm:text-6xl lg:text-7xl font-extrabold tracking-tight leading-[1.08]">
+              <h1 className="text-4xl sm:text-6xl lg:text-7xl font-black tracking-tight leading-[1.08]">
                 Hi, I'm <br />
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-500 via-purple-500 to-sky-400">
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-violet-500 via-indigo-500 to-cyan-400">
                   Parag Pareta
                 </span>
               </h1>
               <p
                 className={`text-xl sm:text-2xl font-semibold leading-snug ${
-                  isDark ? 'text-zinc-300' : 'text-zinc-800'
+                  isDark ? 'text-zinc-200' : 'text-slate-800'
                 }`}
               >
                 Aspirant dedicating full focus to Physics, Chemistry & Mathematics.
@@ -455,18 +463,18 @@ export default function App() {
 
             <p
               className={`text-base sm:text-lg leading-relaxed max-w-xl ${
-                isDark ? 'text-zinc-400' : 'text-zinc-600'
+                isDark ? 'text-zinc-400' : 'text-slate-600'
               }`}
             >
-              I am currently a student preparing for the Joint Entrance Examination (JEE).
-              I haven't done technical or engineering projects yet—my daily priority is building solid conceptual roots, solving multi-step problems, and working toward admission into a top engineering institute.
+              I am currently preparing for the Joint Entrance Examination (JEE).
+              I haven't done technical or engineering projects yet—my priority is building rigorous foundational concepts, mastering multi-step problem solving, and working toward admission into a top engineering institute.
             </p>
 
             <div className="flex flex-wrap items-center gap-4 pt-2">
               <a
                 href="#subjects"
                 onClick={(e) => scrollToSection(e, 'subjects')}
-                className="px-6 py-3 text-sm font-semibold text-white bg-indigo-600 rounded-xl hover:bg-indigo-500 active:scale-95 transition-all shadow-md shadow-indigo-600/20 inline-flex items-center gap-2 group"
+                className="px-6 py-3 text-sm font-semibold text-white bg-gradient-to-r from-violet-600 to-indigo-600 hover:from-violet-500 hover:to-indigo-500 active:scale-95 transition-all rounded-xl shadow-lg shadow-violet-600/30 inline-flex items-center gap-2 group"
               >
                 <span>View Core Subjects</span>
                 <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
@@ -477,8 +485,8 @@ export default function App() {
                 onClick={(e) => scrollToSection(e, 'contact')}
                 className={`px-6 py-3 text-sm font-semibold rounded-xl border active:scale-95 transition-all ${
                   isDark
-                    ? 'bg-zinc-900 border-zinc-800 text-zinc-300 hover:text-white hover:border-zinc-700'
-                    : 'bg-white border-zinc-300 text-zinc-800 hover:text-black hover:border-zinc-400 shadow-xs'
+                    ? 'bg-zinc-900/90 border-zinc-800 text-zinc-300 hover:text-white hover:border-zinc-700'
+                    : 'bg-white border-slate-300 text-slate-800 hover:text-black hover:border-slate-400 shadow-sm'
                 }`}
               >
                 Contact Me
@@ -489,13 +497,13 @@ export default function App() {
                 className={`px-4 py-3 text-sm font-medium rounded-xl border active:scale-95 transition-all inline-flex items-center gap-2 ${
                   isDark
                     ? 'bg-zinc-900/60 border-zinc-800 text-zinc-400 hover:text-zinc-200 hover:border-zinc-700'
-                    : 'bg-zinc-100 border-zinc-200 text-zinc-600 hover:text-zinc-900'
+                    : 'bg-slate-100 border-slate-200 text-slate-600 hover:text-slate-900'
                 }`}
               >
                 {copiedEmail ? (
                   <>
-                    <Check className="w-4 h-4 text-emerald-500" />
-                    <span className="text-emerald-500 text-xs font-semibold">Email Copied!</span>
+                    <Check className="w-4 h-4 text-emerald-400" />
+                    <span className="text-emerald-400 text-xs font-semibold">Email Copied!</span>
                   </>
                 ) : (
                   <>
@@ -507,32 +515,32 @@ export default function App() {
             </div>
           </motion.div>
 
-          {/* Right Column: Hero Visual Showcase with Rotating Badge (Inexa signature) */}
+          {/* Right Column: Hero Visual Card + Signature Inexa Purple Rotating Badge */}
           <motion.div
             variants={sectionFadeVariant}
             initial="hidden"
             animate="visible"
             className="lg:col-span-5 flex justify-center relative"
           >
-            <div className="relative w-full max-w-sm sm:max-w-md">
-              {/* Main Card Frame */}
+            <div className="relative w-full max-w-sm sm:max-w-md animate-float-card">
+              {/* Outer Card with Vibrant Glass Gradient */}
               <div
-                className={`relative rounded-3xl p-6 border shadow-2xl overflow-hidden ${
+                className={`relative rounded-3xl p-6 border transition-all duration-300 overflow-hidden ${
                   isDark
-                    ? 'bg-gradient-to-b from-zinc-900/90 to-zinc-950/90 border-zinc-800'
-                    : 'bg-white border-zinc-200 shadow-xl'
+                    ? 'bg-gradient-to-b from-[#121422]/95 to-[#0b0c14]/95 border-violet-500/25 shadow-2xl shadow-violet-950/30'
+                    : 'bg-white border-slate-200/90 shadow-2xl shadow-indigo-100/80'
                 }`}
               >
-                {/* Inner Header */}
-                <div className="flex items-center justify-between pb-4 border-b border-zinc-800/40 mb-5">
+                {/* Decorative Window Controls */}
+                <div className="flex items-center justify-between pb-4 border-b border-violet-500/10 mb-5">
                   <div className="flex items-center gap-2">
-                    <span className="w-2.5 h-2.5 rounded-full bg-red-500/80" />
-                    <span className="w-2.5 h-2.5 rounded-full bg-amber-500/80" />
-                    <span className="w-2.5 h-2.5 rounded-full bg-emerald-500/80" />
+                    <span className="w-2.5 h-2.5 rounded-full bg-rose-500/90" />
+                    <span className="w-2.5 h-2.5 rounded-full bg-amber-500/90" />
+                    <span className="w-2.5 h-2.5 rounded-full bg-emerald-500/90" />
                   </div>
                   <span
                     className={`text-[10px] font-mono uppercase tracking-wider ${
-                      isDark ? 'text-zinc-500' : 'text-zinc-400'
+                      isDark ? 'text-zinc-500' : 'text-slate-400'
                     }`}
                   >
                     exam prep · 2026
@@ -543,100 +551,91 @@ export default function App() {
                 <div className="space-y-4">
                   <div
                     className={`p-5 rounded-2xl border ${
-                      isDark ? 'bg-zinc-950/80 border-zinc-800/80' : 'bg-zinc-50 border-zinc-200'
+                      isDark
+                        ? 'bg-[#08090f]/80 border-zinc-800/80'
+                        : 'bg-slate-50/80 border-slate-200'
                     }`}
                   >
-                    <p className="text-xs font-mono text-indigo-500 uppercase tracking-wider mb-1">
+                    <p className="text-xs font-mono text-violet-500 uppercase tracking-wider mb-1 font-semibold">
                       Academic Focus
                     </p>
                     <h3 className="text-lg font-bold">Joint Entrance Examination</h3>
                     <p
                       className={`text-xs mt-1 leading-relaxed ${
-                        isDark ? 'text-zinc-400' : 'text-zinc-600'
+                        isDark ? 'text-zinc-400' : 'text-slate-600'
                       }`}
                     >
-                      Targeting qualification for premier engineering colleges (IITs / NITs).
+                      Targeting qualification for premier engineering institutes (IITs / NITs).
                     </p>
                   </div>
 
-                  {/* 3 Quick Stat Meters inspired by Inexa */}
-                  <div className="grid grid-cols-3 gap-3 text-center">
+                  {/* 3 Subject Meters inspired by Inexa */}
+                  <div className="grid grid-cols-3 gap-2.5 text-center">
                     <div
-                      className={`p-3 rounded-xl border ${
-                        isDark ? 'bg-zinc-900/50 border-zinc-800' : 'bg-zinc-50 border-zinc-200'
+                      className={`p-3 rounded-xl border transition-colors ${
+                        isDark ? 'bg-zinc-900/50 border-zinc-800' : 'bg-white border-slate-200 shadow-xs'
                       }`}
                     >
-                      <Atom className="w-4 h-4 mx-auto text-indigo-400 mb-1" />
-                      <p className="text-sm font-bold">Physics</p>
-                      <p className={`text-[10px] ${isDark ? 'text-zinc-400' : 'text-zinc-500'}`}>Core</p>
+                      <Atom className="w-4 h-4 mx-auto text-violet-400 mb-1" />
+                      <p className="text-xs font-bold">Physics</p>
+                      <p className={`text-[10px] ${isDark ? 'text-zinc-400' : 'text-slate-500'}`}>Core</p>
                     </div>
                     <div
-                      className={`p-3 rounded-xl border ${
-                        isDark ? 'bg-zinc-900/50 border-zinc-800' : 'bg-zinc-50 border-zinc-200'
+                      className={`p-3 rounded-xl border transition-colors ${
+                        isDark ? 'bg-zinc-900/50 border-zinc-800' : 'bg-white border-slate-200 shadow-xs'
                       }`}
                     >
-                      <Binary className="w-4 h-4 mx-auto text-sky-400 mb-1" />
-                      <p className="text-sm font-bold">Math</p>
-                      <p className={`text-[10px] ${isDark ? 'text-zinc-400' : 'text-zinc-500'}`}>Core</p>
+                      <Binary className="w-4 h-4 mx-auto text-cyan-400 mb-1" />
+                      <p className="text-xs font-bold">Math</p>
+                      <p className={`text-[10px] ${isDark ? 'text-zinc-400' : 'text-slate-500'}`}>Core</p>
                     </div>
                     <div
-                      className={`p-3 rounded-xl border ${
-                        isDark ? 'bg-zinc-900/50 border-zinc-800' : 'bg-zinc-50 border-zinc-200'
+                      className={`p-3 rounded-xl border transition-colors ${
+                        isDark ? 'bg-zinc-900/50 border-zinc-800' : 'bg-white border-slate-200 shadow-xs'
                       }`}
                     >
-                      <FlaskConical className="w-4 h-4 mx-auto text-purple-400 mb-1" />
-                      <p className="text-sm font-bold">Chemistry</p>
-                      <p className={`text-[10px] ${isDark ? 'text-zinc-400' : 'text-zinc-500'}`}>Core</p>
+                      <FlaskConical className="w-4 h-4 mx-auto text-fuchsia-400 mb-1" />
+                      <p className="text-xs font-bold">Chemistry</p>
+                      <p className={`text-[10px] ${isDark ? 'text-zinc-400' : 'text-slate-500'}`}>Core</p>
                     </div>
                   </div>
 
-                  {/* Quote / Note */}
+                  {/* Quote / Dedication */}
                   <div
                     className={`p-3.5 rounded-xl border text-xs leading-relaxed ${
                       isDark
-                        ? 'bg-indigo-950/20 border-indigo-800/40 text-indigo-300'
-                        : 'bg-indigo-50 border-indigo-200 text-indigo-900'
+                        ? 'bg-violet-950/20 border-violet-800/40 text-violet-300'
+                        : 'bg-violet-50/80 border-violet-200 text-violet-900'
                     }`}
                   >
-                    "Building deep mastery before building products. Every equation solved today forms tomorrow's engineering foundation."
+                    "Building deep conceptual clarity before building software products. Focused on competitive examination fundamentals."
                   </div>
                 </div>
               </div>
 
-              {/* Inexa Signature Rotating Circular Stamp / Badge */}
-              <div className="absolute -bottom-6 -right-6 sm:-bottom-8 sm:-right-8 z-20">
-                <div className="relative w-28 h-28 sm:w-32 sm:h-32 flex items-center justify-center">
-                  {/* Rotating SVG circular text */}
-                  <motion.svg
-                    animate={{ rotate: 360 }}
-                    transition={{ repeat: Infinity, duration: 14, ease: "linear" }}
-                    className="absolute inset-0 w-full h-full"
-                    viewBox="0 0 100 100"
-                  >
-                    <path
-                      id="circlePath"
-                      d="M 50, 50 m -37, 0 a 37,37 0 1,1 74,0 a 37,37 0 1,1 -74,0"
-                      fill="none"
-                    />
-                    <text
-                      className={`text-[9.2px] uppercase font-bold tracking-[0.16em] ${
-                        isDark ? 'fill-zinc-300' : 'fill-zinc-800'
-                      }`}
-                    >
-                      <textPath xlinkHref="#circlePath" startOffset="0%">
-                        ✦ PARAG PARETA ✦ JEE ASPIRANT ✦ INDIA ✦
-                      </textPath>
-                    </text>
-                  </motion.svg>
+              {/* The Signature Inexa Rotating Purple Stamp Badge */}
+              <div className="absolute -bottom-6 -right-6 sm:-bottom-8 sm:-right-8 z-30">
+                <div className="relative w-28 h-28 sm:w-32 sm:h-32 flex items-center justify-center group cursor-pointer">
+                  {/* Rotating Circular Text Ribbon */}
+                  <div className="absolute inset-0 animate-spin-badge">
+                    <svg className="w-full h-full" viewBox="0 0 100 100">
+                      <path
+                        id="heroBadgePath"
+                        d="M 50, 50 m -37, 0 a 37,37 0 1,1 74,0 a 37,37 0 1,1 -74,0"
+                        fill="none"
+                      />
+                      <text
+                        className="text-[9.5px] uppercase font-bold tracking-[0.16em] fill-white"
+                      >
+                        <textPath xlinkHref="#heroBadgePath" startOffset="0%">
+                          ✦ PARAG PARETA ✦ JEE ASPIRANT ✦ INDIA ✦
+                        </textPath>
+                      </text>
+                    </svg>
+                  </div>
 
-                  {/* Center Icon Badge */}
-                  <div
-                    className={`w-12 h-12 rounded-full border shadow-lg flex items-center justify-center ${
-                      isDark
-                        ? 'bg-zinc-900 border-zinc-700 text-indigo-400'
-                        : 'bg-white border-zinc-300 text-indigo-600 shadow-md'
-                    }`}
-                  >
+                  {/* Eye-catching Purple Center Bubble Badge (Inexa signature) */}
+                  <div className="w-14 h-14 rounded-full bg-gradient-to-tr from-violet-600 via-indigo-600 to-purple-500 shadow-xl shadow-violet-600/40 border-2 border-white/30 flex items-center justify-center text-white transition-transform group-hover:scale-110">
                     <Sparkles className="w-5 h-5 animate-pulse" />
                   </div>
                 </div>
@@ -646,33 +645,32 @@ export default function App() {
         </div>
       </section>
 
-      {/* Infinite Horizontal Marquee Ticker (Inexa signature feature) */}
+      {/* Infinite Horizontal Smooth Marquee Track */}
       <div
-        className={`w-full py-4 border-y overflow-hidden whitespace-nowrap relative select-none ${
-          isDark ? 'bg-zinc-950/80 border-zinc-800/80' : 'bg-zinc-100 border-zinc-200'
+        className={`w-full py-4.5 border-y overflow-hidden whitespace-nowrap relative select-none transition-colors ${
+          isDark
+            ? 'bg-[#0b0c14]/90 border-zinc-800/80'
+            : 'bg-slate-100/90 border-slate-200 shadow-inner'
         }`}
       >
-        <motion.div
-          style={{ x: marqueeX }}
-          className="inline-flex items-center gap-8 text-xs font-mono uppercase tracking-widest font-semibold"
-        >
-          {[...Array(6)].map((_, i) => (
+        <div className="animate-marquee-track text-xs font-mono uppercase tracking-widest font-semibold flex items-center gap-8">
+          {[...Array(8)].map((_, i) => (
             <React.Fragment key={i}>
               <span className="flex items-center gap-2">
-                <span className="text-indigo-500">✦</span> PHYSICS (MECHANICS & OPTICS)
+                <span className="text-violet-500">✦</span> PHYSICS (MECHANICS & OPTICS)
               </span>
               <span className="flex items-center gap-2">
-                <span className="text-sky-500">✦</span> MATHEMATICS (CALCULUS & ALGEBRA)
+                <span className="text-cyan-500">✦</span> MATHEMATICS (CALCULUS & ALGEBRA)
               </span>
               <span className="flex items-center gap-2">
-                <span className="text-purple-500">✦</span> CHEMISTRY (ORGANIC & PHYSICAL)
+                <span className="text-fuchsia-500">✦</span> CHEMISTRY (ORGANIC & PHYSICAL)
               </span>
               <span className="flex items-center gap-2">
-                <span className="text-emerald-500">✦</span> JEE MAIN & JEE ADVANCED
+                <span className="text-emerald-400">✦</span> JEE MAIN & JEE ADVANCED
               </span>
             </React.Fragment>
           ))}
-        </motion.div>
+        </div>
       </div>
 
       {/* About Section */}
@@ -687,80 +685,86 @@ export default function App() {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-start">
           <div className="lg:col-span-4">
             <span
-              className={`text-xs font-mono uppercase tracking-wider block mb-2 ${
-                isDark ? 'text-indigo-400' : 'text-indigo-600'
+              className={`text-xs font-mono uppercase tracking-wider block mb-2 font-bold ${
+                isDark ? 'text-violet-400' : 'text-violet-600'
               }`}
             >
               [ About Me ]
             </span>
-            <h2 className="text-3xl sm:text-4xl font-extrabold tracking-tight">
+            <h2 className="text-3xl sm:text-4xl font-black tracking-tight">
               A Dedicated Journey Toward Engineering
             </h2>
           </div>
 
           <div
             className={`lg:col-span-8 space-y-5 text-base sm:text-lg leading-relaxed ${
-              isDark ? 'text-zinc-300' : 'text-zinc-700'
+              isDark ? 'text-zinc-300' : 'text-slate-700'
             }`}
           >
             <p>
-              I am a student preparing for the Joint Entrance Examination (JEE).
-              Currently, my day revolves around solving numerical problems, studying scientific concepts, and revising chapters across Physics, Chemistry, and Mathematics.
+              I am a student currently preparing for the Joint Entrance Examination (JEE).
+              My days are devoted to solving complex numerical problems, deriving theorems, and mastering fundamentals across Physics, Chemistry, and Mathematics.
             </p>
-            <p className={isDark ? 'text-zinc-400' : 'text-zinc-600'}>
-              I am not a mentor, teacher, or coach—I am strictly an individual student working on my own preparation.
-              I haven't built coding projects yet, as my full focus is directed toward cracking the competitive entrance exam and earning a place in an engineering college.
+            <p className={isDark ? 'text-zinc-400' : 'text-slate-600'}>
+              I am not a mentor, teacher, or coach—I am strictly an individual student focused on my own preparation.
+              I have not built software projects yet, as my energy is channeled toward competitive entrance examination success and earning an engineering seat.
             </p>
 
-            {/* Three Pillar Progress Rings inspired by Inexa (Design / Consultancy / Support -> Subjects) */}
+            {/* Inexa-style 3 Subject Percentage Progress Rings */}
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-4">
               <div
-                className={`p-5 rounded-2xl border ${
-                  isDark ? 'bg-zinc-900/40 border-zinc-800' : 'bg-white border-zinc-200 shadow-xs'
+                className={`p-5 rounded-2xl border transition-all duration-300 hover:-translate-y-1 ${
+                  isDark
+                    ? 'bg-[#10121d] border-zinc-800/80 hover:border-violet-500/40'
+                    : 'bg-white border-slate-200 shadow-sm hover:border-violet-300'
                 }`}
               >
                 <div className="flex items-center justify-between mb-2">
-                  <span className="text-xs font-mono uppercase tracking-wider text-indigo-400">Physics</span>
+                  <span className="text-xs font-mono uppercase tracking-wider text-violet-400 font-bold">Physics</span>
                   <span className="text-xs font-bold font-mono">100%</span>
                 </div>
-                <div className={`w-full h-1.5 rounded-full overflow-hidden ${isDark ? 'bg-zinc-800' : 'bg-zinc-200'}`}>
-                  <div className="h-full bg-indigo-500 rounded-full w-full" />
+                <div className={`w-full h-1.5 rounded-full overflow-hidden ${isDark ? 'bg-zinc-800' : 'bg-slate-200'}`}>
+                  <div className="h-full bg-gradient-to-r from-violet-500 to-indigo-500 rounded-full w-full" />
                 </div>
-                <p className={`text-xs mt-3 leading-relaxed ${isDark ? 'text-zinc-400' : 'text-zinc-500'}`}>
-                  Conceptual principles & mechanics drills.
+                <p className={`text-xs mt-3 leading-relaxed ${isDark ? 'text-zinc-400' : 'text-slate-500'}`}>
+                  Conceptual principles & vector mechanics drills.
                 </p>
               </div>
 
               <div
-                className={`p-5 rounded-2xl border ${
-                  isDark ? 'bg-zinc-900/40 border-zinc-800' : 'bg-white border-zinc-200 shadow-xs'
+                className={`p-5 rounded-2xl border transition-all duration-300 hover:-translate-y-1 ${
+                  isDark
+                    ? 'bg-[#10121d] border-zinc-800/80 hover:border-cyan-500/40'
+                    : 'bg-white border-slate-200 shadow-sm hover:border-cyan-300'
                 }`}
               >
                 <div className="flex items-center justify-between mb-2">
-                  <span className="text-xs font-mono uppercase tracking-wider text-sky-400">Mathematics</span>
+                  <span className="text-xs font-mono uppercase tracking-wider text-cyan-400 font-bold">Mathematics</span>
                   <span className="text-xs font-bold font-mono">100%</span>
                 </div>
-                <div className={`w-full h-1.5 rounded-full overflow-hidden ${isDark ? 'bg-zinc-800' : 'bg-zinc-200'}`}>
-                  <div className="h-full bg-sky-500 rounded-full w-full" />
+                <div className={`w-full h-1.5 rounded-full overflow-hidden ${isDark ? 'bg-zinc-800' : 'bg-slate-200'}`}>
+                  <div className="h-full bg-gradient-to-r from-indigo-500 to-cyan-400 rounded-full w-full" />
                 </div>
-                <p className={`text-xs mt-3 leading-relaxed ${isDark ? 'text-zinc-400' : 'text-zinc-500'}`}>
+                <p className={`text-xs mt-3 leading-relaxed ${isDark ? 'text-zinc-400' : 'text-slate-500'}`}>
                   Calculus, vectors & multi-step problems.
                 </p>
               </div>
 
               <div
-                className={`p-5 rounded-2xl border ${
-                  isDark ? 'bg-zinc-900/40 border-zinc-800' : 'bg-white border-zinc-200 shadow-xs'
+                className={`p-5 rounded-2xl border transition-all duration-300 hover:-translate-y-1 ${
+                  isDark
+                    ? 'bg-[#10121d] border-zinc-800/80 hover:border-fuchsia-500/40'
+                    : 'bg-white border-slate-200 shadow-sm hover:border-fuchsia-300'
                 }`}
               >
                 <div className="flex items-center justify-between mb-2">
-                  <span className="text-xs font-mono uppercase tracking-wider text-purple-400">Chemistry</span>
+                  <span className="text-xs font-mono uppercase tracking-wider text-fuchsia-400 font-bold">Chemistry</span>
                   <span className="text-xs font-bold font-mono">100%</span>
                 </div>
-                <div className={`w-full h-1.5 rounded-full overflow-hidden ${isDark ? 'bg-zinc-800' : 'bg-zinc-200'}`}>
-                  <div className="h-full bg-purple-500 rounded-full w-full" />
+                <div className={`w-full h-1.5 rounded-full overflow-hidden ${isDark ? 'bg-zinc-800' : 'bg-slate-200'}`}>
+                  <div className="h-full bg-gradient-to-r from-violet-500 to-fuchsia-500 rounded-full w-full" />
                 </div>
-                <p className={`text-xs mt-3 leading-relaxed ${isDark ? 'text-zinc-400' : 'text-zinc-500'}`}>
+                <p className={`text-xs mt-3 leading-relaxed ${isDark ? 'text-zinc-400' : 'text-slate-500'}`}>
                   Organic reaction pathways & equilibrium.
                 </p>
               </div>
@@ -769,7 +773,7 @@ export default function App() {
         </div>
       </motion.section>
 
-      {/* Core Subjects Section with Big Typography & Interactive Accordion (Inexa style) */}
+      {/* Core Subjects Section with Big Typography & Interactive Accordions */}
       <motion.section
         id="subjects"
         variants={sectionFadeVariant}
@@ -780,21 +784,21 @@ export default function App() {
       >
         <div className="mb-12">
           <span
-            className={`text-xs font-mono uppercase tracking-wider block mb-2 ${
-              isDark ? 'text-indigo-400' : 'text-indigo-600'
+            className={`text-xs font-mono uppercase tracking-wider block mb-2 font-bold ${
+              isDark ? 'text-violet-400' : 'text-violet-600'
             }`}
           >
             [ What I'm Studying ]
           </span>
-          <h2 className="text-3xl sm:text-5xl font-extrabold tracking-tight">
+          <h2 className="text-3xl sm:text-5xl font-black tracking-tight">
             The Three Academic Pillars
           </h2>
-          <p className={`text-base mt-2 max-w-2xl ${isDark ? 'text-zinc-400' : 'text-zinc-600'}`}>
-            Click through each subject below to view the syllabus breakdown and primary chapters.
+          <p className={`text-base mt-2 max-w-2xl ${isDark ? 'text-zinc-400' : 'text-slate-600'}`}>
+            Click through each subject row below to explore the syllabus breakdown and primary chapters.
           </p>
         </div>
 
-        {/* Inexa-style Big Typography Interactive Rows */}
+        {/* Big Typography Interactive Rows */}
         <div className="space-y-4">
           {subjects.map((sub) => {
             const isSelected = activeSubjectId === sub.id;
@@ -803,40 +807,40 @@ export default function App() {
             return (
               <div
                 key={sub.id}
-                className={`rounded-2xl border transition-all overflow-hidden ${
+                className={`rounded-2xl border transition-all duration-300 overflow-hidden ${
                   isSelected
                     ? isDark
-                      ? 'bg-zinc-900/80 border-indigo-500/60 shadow-lg shadow-indigo-950/20'
-                      : 'bg-white border-indigo-400 shadow-md'
+                      ? 'bg-gradient-to-b from-[#131525] to-[#0c0d17] border-violet-500/60 shadow-xl shadow-violet-950/30'
+                      : 'bg-white border-violet-400 shadow-lg shadow-violet-100'
                     : isDark
-                    ? 'bg-zinc-950/40 border-zinc-800 hover:border-zinc-700'
-                    : 'bg-white/60 border-zinc-200 hover:border-zinc-300'
+                    ? 'bg-[#0f1019]/60 border-zinc-800/80 hover:border-zinc-700'
+                    : 'bg-white/70 border-slate-200 hover:border-slate-300'
                 }`}
               >
                 {/* Row Header Trigger */}
                 <button
                   onClick={() => setActiveSubjectId(isSelected ? '' : sub.id)}
-                  className="w-full p-6 sm:p-8 flex items-center justify-between text-left gap-4 group"
+                  className="w-full p-6 sm:p-8 flex items-center justify-between text-left gap-4 group cursor-pointer"
                 >
                   <div className="flex items-center gap-5 sm:gap-8">
-                    <span className="font-mono text-sm sm:text-base font-bold text-indigo-500">
+                    <span className="font-mono text-sm sm:text-base font-extrabold text-violet-500">
                       {sub.number}
                     </span>
                     <div>
                       <h3
-                        className={`text-2xl sm:text-4xl font-extrabold tracking-tight transition-colors ${
+                        className={`text-2xl sm:text-4xl font-black tracking-tight transition-colors ${
                           isSelected
-                            ? 'text-indigo-500'
+                            ? 'text-transparent bg-clip-text bg-gradient-to-r from-violet-500 to-indigo-400'
                             : isDark
-                            ? 'text-white group-hover:text-indigo-400'
-                            : 'text-zinc-900 group-hover:text-indigo-600'
+                            ? 'text-white group-hover:text-violet-400'
+                            : 'text-slate-900 group-hover:text-violet-600'
                         }`}
                       >
                         {sub.name}
                       </h3>
                       <p
                         className={`text-xs sm:text-sm mt-1 ${
-                          isDark ? 'text-zinc-400' : 'text-zinc-500'
+                          isDark ? 'text-zinc-400' : 'text-slate-500'
                         }`}
                       >
                         {sub.headline}
@@ -846,12 +850,12 @@ export default function App() {
 
                   <div className="flex items-center gap-3">
                     <div
-                      className={`w-10 h-10 rounded-xl border flex items-center justify-center transition-transform ${
+                      className={`w-11 h-11 rounded-xl border flex items-center justify-center transition-all duration-300 ${
                         isSelected
-                          ? 'rotate-90 bg-indigo-600 border-indigo-500 text-white'
+                          ? 'rotate-90 bg-gradient-to-r from-violet-600 to-indigo-600 border-violet-400 text-white shadow-md shadow-violet-600/30'
                           : isDark
-                          ? 'bg-zinc-900 border-zinc-800 text-zinc-400 group-hover:text-white'
-                          : 'bg-zinc-100 border-zinc-200 text-zinc-600 group-hover:text-black'
+                          ? 'bg-zinc-900 border-zinc-800 text-zinc-400 group-hover:text-white group-hover:border-zinc-700'
+                          : 'bg-slate-100 border-slate-200 text-slate-600 group-hover:text-black group-hover:border-slate-300'
                       }`}
                     >
                       <ChevronRight className="w-5 h-5" />
@@ -866,17 +870,19 @@ export default function App() {
                       initial={{ opacity: 0, height: 0 }}
                       animate={{ opacity: 1, height: 'auto' }}
                       exit={{ opacity: 0, height: 0 }}
-                      transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
+                      transition={{ duration: 0.32, ease: [0.16, 1, 0.3, 1] }}
                       className="overflow-hidden"
                     >
                       <div
                         className={`px-6 pb-8 sm:px-8 border-t ${
-                          isDark ? 'border-zinc-800/80 bg-zinc-950/40' : 'border-zinc-200 bg-zinc-50/50'
+                          isDark
+                            ? 'border-violet-500/15 bg-zinc-950/40'
+                            : 'border-slate-200/80 bg-slate-50/70'
                         }`}
                       >
                         <p
                           className={`text-sm sm:text-base leading-relaxed pt-5 mb-6 ${
-                            isDark ? 'text-zinc-300' : 'text-zinc-700'
+                            isDark ? 'text-zinc-300' : 'text-slate-700'
                           }`}
                         >
                           {sub.description}
@@ -884,8 +890,8 @@ export default function App() {
 
                         <div>
                           <p
-                            className={`text-xs font-mono uppercase tracking-wider mb-3 ${
-                              isDark ? 'text-zinc-400' : 'text-zinc-500'
+                            className={`text-xs font-mono uppercase tracking-wider mb-3 font-semibold ${
+                              isDark ? 'text-zinc-400' : 'text-slate-500'
                             }`}
                           >
                             Key Syllabus Chapters & Problem Focus:
@@ -894,14 +900,14 @@ export default function App() {
                             {sub.topics.map((t, idx) => (
                               <div
                                 key={idx}
-                                className={`p-3 rounded-xl border text-xs flex items-center gap-2.5 ${
+                                className={`p-3.5 rounded-xl border text-xs flex items-center gap-3 transition-colors ${
                                   isDark
-                                    ? 'bg-zinc-900/60 border-zinc-800/80 text-zinc-300'
-                                    : 'bg-white border-zinc-200 text-zinc-800'
+                                    ? 'bg-[#10121e]/80 border-zinc-800/80 text-zinc-300 hover:border-violet-500/30'
+                                    : 'bg-white border-slate-200 text-slate-800 hover:border-violet-300'
                                 }`}
                               >
-                                <span className="w-1.5 h-1.5 rounded-full bg-indigo-500 shrink-0" />
-                                <span>{t}</span>
+                                <span className="w-2 h-2 rounded-full bg-violet-500 shrink-0 shadow-xs shadow-violet-500/50" />
+                                <span className="font-medium">{t}</span>
                               </div>
                             ))}
                           </div>
@@ -916,24 +922,24 @@ export default function App() {
         </div>
       </motion.section>
 
-      {/* High-Contrast Section (Inexa "Rewards / Highlights" inspiration) */}
+      {/* High-Contrast Highlights Banner */}
       <section
         className={`py-16 px-6 border-b transition-colors ${
           isDark
-            ? 'bg-zinc-900/40 border-zinc-800/60'
-            : 'bg-zinc-900 text-white border-zinc-900'
+            ? 'bg-gradient-to-r from-[#121424] to-[#0d0e17] border-violet-500/20'
+            : 'bg-gradient-to-r from-slate-900 to-indigo-950 text-white border-slate-900 shadow-xl'
         }`}
       >
         <div className="max-w-6xl mx-auto flex flex-col md:flex-row items-center justify-between gap-8">
           <div>
-            <span className="text-xs font-mono uppercase tracking-wider text-indigo-400 block mb-1">
+            <span className="text-xs font-mono uppercase tracking-wider text-violet-400 block mb-1 font-bold">
               [ Daily Commitment ]
             </span>
             <h3 className="text-2xl sm:text-3xl font-extrabold tracking-tight">
               Consistent Practice & Conceptual Depth
             </h3>
             <p className="text-sm text-zinc-400 mt-1 max-w-xl">
-              Dedication to problem-solving, timed practice papers, and strengthening analytical thinking.
+              Dedication to multi-step problem solving, revision drills, and analytical precision for the JEE entrance exam.
             </p>
           </div>
 
@@ -941,7 +947,7 @@ export default function App() {
             <a
               href="#contact"
               onClick={(e) => scrollToSection(e, 'contact')}
-              className="px-6 py-3 text-xs font-semibold text-white bg-indigo-600 rounded-xl hover:bg-indigo-500 active:scale-95 transition-all shadow-md"
+              className="px-6 py-3 text-xs font-semibold text-white bg-gradient-to-r from-violet-600 to-indigo-600 hover:from-violet-500 hover:to-indigo-500 active:scale-95 transition-all rounded-xl shadow-lg shadow-violet-600/30"
             >
               Get In Touch
             </a>
@@ -949,7 +955,7 @@ export default function App() {
         </div>
       </section>
 
-      {/* Contact Section with Topic Selector Pills (Inexa style) */}
+      {/* Contact Section with Inexa Topic Selector Pills */}
       <motion.section
         id="contact"
         variants={sectionFadeVariant}
@@ -960,42 +966,44 @@ export default function App() {
       >
         <div className="mb-12">
           <span
-            className={`text-xs font-mono uppercase tracking-wider block mb-2 ${
-              isDark ? 'text-indigo-400' : 'text-indigo-600'
+            className={`text-xs font-mono uppercase tracking-wider block mb-2 font-bold ${
+              isDark ? 'text-violet-400' : 'text-violet-600'
             }`}
           >
             [ Contact Me ]
           </span>
-          <h2 className="text-3xl sm:text-5xl font-extrabold tracking-tight">
+          <h2 className="text-3xl sm:text-5xl font-black tracking-tight">
             Have a Question? Get in Touch!
           </h2>
-          <p className={`text-base mt-2 ${isDark ? 'text-zinc-400' : 'text-zinc-600'}`}>
+          <p className={`text-base mt-2 ${isDark ? 'text-zinc-400' : 'text-slate-600'}`}>
             Feel free to connect or say hello.
           </p>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-10">
-          {/* Left Details */}
+          {/* Left Cards */}
           <div className="lg:col-span-5 space-y-4">
             {/* Direct Email Card */}
             <div
-              className={`p-5 rounded-2xl border flex items-center justify-between ${
-                isDark ? 'bg-zinc-900/60 border-zinc-800' : 'bg-white border-zinc-200 shadow-xs'
+              className={`p-5 rounded-2xl border flex items-center justify-between transition-colors ${
+                isDark
+                  ? 'bg-[#10121d] border-zinc-800/80 shadow-md shadow-black/20'
+                  : 'bg-white border-slate-200 shadow-sm'
               }`}
             >
               <div className="flex items-center gap-3.5">
                 <div
-                  className={`w-11 h-11 rounded-xl border flex items-center justify-center text-indigo-500 ${
-                    isDark ? 'bg-zinc-800 border-zinc-700' : 'bg-indigo-50 border-indigo-100'
+                  className={`w-11 h-11 rounded-xl border flex items-center justify-center text-violet-500 ${
+                    isDark ? 'bg-zinc-800/80 border-zinc-700' : 'bg-violet-50 border-violet-200'
                   }`}
                 >
                   <Mail className="w-5 h-5" />
                 </div>
                 <div>
-                  <p className={`text-xs ${isDark ? 'text-zinc-400' : 'text-zinc-500'}`}>Email Address</p>
+                  <p className={`text-xs ${isDark ? 'text-zinc-400' : 'text-slate-500'}`}>Email Address</p>
                   <a
                     href={`mailto:${emailAddress}`}
-                    className="text-sm font-semibold hover:text-indigo-500 transition-colors"
+                    className="text-sm font-semibold hover:text-violet-500 transition-colors"
                   >
                     {emailAddress}
                   </a>
@@ -1003,79 +1011,81 @@ export default function App() {
               </div>
               <button
                 onClick={handleCopyEmail}
-                className={`p-2.5 rounded-xl border transition-colors ${
+                className={`p-2.5 rounded-xl border transition-colors cursor-pointer ${
                   isDark
                     ? 'border-zinc-800 text-zinc-400 hover:text-white hover:border-zinc-700'
-                    : 'border-zinc-200 text-zinc-500 hover:text-black'
+                    : 'border-slate-200 text-slate-500 hover:text-black hover:border-slate-300'
                 }`}
                 title="Copy email address"
               >
-                {copiedEmail ? <Check className="w-4 h-4 text-emerald-500" /> : <Copy className="w-4 h-4" />}
+                {copiedEmail ? <Check className="w-4 h-4 text-emerald-400" /> : <Copy className="w-4 h-4" />}
               </button>
             </div>
 
-            {/* GitHub Profile Card */}
+            {/* GitHub Card */}
             <a
               href={githubAddress}
               target="_blank"
               rel="noopener noreferrer"
               className={`p-5 rounded-2xl border flex items-center justify-between transition-all group ${
                 isDark
-                  ? 'bg-zinc-900/60 border-zinc-800 hover:border-zinc-700'
-                  : 'bg-white border-zinc-200 hover:border-zinc-300 shadow-xs'
+                  ? 'bg-[#10121d] border-zinc-800/80 hover:border-violet-500/40 shadow-md shadow-black/20'
+                  : 'bg-white border-slate-200 hover:border-violet-300 shadow-sm'
               }`}
             >
               <div className="flex items-center gap-3.5">
                 <div
-                  className={`w-11 h-11 rounded-xl border flex items-center justify-center text-indigo-500 ${
-                    isDark ? 'bg-zinc-800 border-zinc-700' : 'bg-indigo-50 border-indigo-100'
+                  className={`w-11 h-11 rounded-xl border flex items-center justify-center text-violet-500 ${
+                    isDark ? 'bg-zinc-800/80 border-zinc-700' : 'bg-violet-50 border-violet-200'
                   }`}
                 >
                   <Github className="w-5 h-5" />
                 </div>
                 <div>
-                  <p className={`text-xs ${isDark ? 'text-zinc-400' : 'text-zinc-500'}`}>GitHub Profile</p>
-                  <p className="text-sm font-semibold group-hover:text-indigo-500 transition-colors">
+                  <p className={`text-xs ${isDark ? 'text-zinc-400' : 'text-slate-500'}`}>GitHub Profile</p>
+                  <p className="text-sm font-semibold group-hover:text-violet-500 transition-colors">
                     github.com/paragsup
                   </p>
                 </div>
               </div>
-              <ArrowUpRight className="w-4 h-4 text-zinc-400 group-hover:text-indigo-500 transition-colors" />
+              <ArrowUpRight className="w-4 h-4 text-zinc-400 group-hover:text-violet-500 transition-colors" />
             </a>
 
-            {/* Inexa Style Giant Email Highlight */}
+            {/* Giant Inexa Email Highlight Box */}
             <div
-              className={`p-6 rounded-2xl border text-center ${
+              className={`p-6 rounded-2xl border text-center transition-colors ${
                 isDark
-                  ? 'bg-gradient-to-b from-zinc-900/40 to-zinc-950 border-zinc-800/80'
-                  : 'bg-indigo-50/60 border-indigo-100'
+                  ? 'bg-gradient-to-b from-[#131526]/60 to-[#0c0d16] border-violet-500/25'
+                  : 'bg-gradient-to-b from-violet-50 to-indigo-50/50 border-violet-200'
               }`}
             >
-              <p className={`text-xs font-mono uppercase tracking-wider mb-2 ${isDark ? 'text-zinc-500' : 'text-zinc-400'}`}>
-                Direct Mailto
+              <p className={`text-xs font-mono uppercase tracking-wider mb-2 font-semibold ${isDark ? 'text-zinc-500' : 'text-slate-400'}`}>
+                Direct Mail
               </p>
               <a
                 href={`mailto:${emailAddress}`}
-                className="text-lg sm:text-xl font-bold tracking-tight text-indigo-500 hover:underline"
+                className="text-lg sm:text-xl font-bold tracking-tight text-violet-500 hover:underline"
               >
                 {emailAddress}
               </a>
             </div>
           </div>
 
-          {/* Right: Message Form with Inexa-style Topic Selector Pills */}
+          {/* Right: Message Form */}
           <div
             className={`lg:col-span-7 p-6 sm:p-8 rounded-3xl border ${
-              isDark ? 'bg-zinc-900/60 border-zinc-800' : 'bg-white border-zinc-200 shadow-sm'
+              isDark
+                ? 'bg-[#10121d]/90 border-zinc-800/80 shadow-2xl shadow-black/30'
+                : 'bg-white border-slate-200 shadow-lg shadow-slate-100'
             }`}
           >
             <h3 className="text-base font-bold mb-4">Send a Direct Message</h3>
 
-            {/* Inexa Style Selector Pills (Budget / Topic pills) */}
+            {/* Topic Selector Pills */}
             <div className="mb-6">
               <label
-                className={`block text-xs font-mono uppercase tracking-wider mb-2.5 ${
-                  isDark ? 'text-zinc-400' : 'text-zinc-500'
+                className={`block text-xs font-mono uppercase tracking-wider mb-2.5 font-semibold ${
+                  isDark ? 'text-zinc-400' : 'text-slate-500'
                 }`}
               >
                 Select Topic:
@@ -1088,12 +1098,12 @@ export default function App() {
                       key={topic}
                       type="button"
                       onClick={() => setSelectedTopic(topic)}
-                      className={`px-3.5 py-1.5 rounded-full text-xs font-medium border transition-all ${
+                      className={`px-4 py-1.5 rounded-full text-xs font-medium border transition-all cursor-pointer ${
                         isSelected
-                          ? 'bg-indigo-600 border-indigo-500 text-white shadow-xs'
+                          ? 'bg-gradient-to-r from-violet-600 to-indigo-600 border-violet-500 text-white shadow-md shadow-violet-600/30'
                           : isDark
-                          ? 'bg-zinc-950 border-zinc-800 text-zinc-400 hover:text-white hover:border-zinc-700'
-                          : 'bg-zinc-100 border-zinc-200 text-zinc-600 hover:text-black hover:border-zinc-300'
+                          ? 'bg-zinc-900 border-zinc-800 text-zinc-400 hover:text-white hover:border-zinc-700'
+                          : 'bg-slate-100 border-slate-200 text-slate-600 hover:text-black hover:border-slate-300'
                       }`}
                     >
                       {topic}
@@ -1105,16 +1115,16 @@ export default function App() {
 
             {formStatus === 'success' ? (
               <div className="py-8 text-center space-y-3">
-                <div className="w-12 h-12 rounded-full bg-emerald-500/20 border border-emerald-500/40 flex items-center justify-center mx-auto text-emerald-500">
+                <div className="w-12 h-12 rounded-full bg-emerald-500/20 border border-emerald-500/40 flex items-center justify-center mx-auto text-emerald-400">
                   <Check className="w-6 h-6" />
                 </div>
                 <h4 className="text-base font-bold">Email Client Opening...</h4>
-                <p className={`text-xs max-w-sm mx-auto ${isDark ? 'text-zinc-400' : 'text-zinc-600'}`}>
-                  Your message was prepared with the topic "[{selectedTopic}]" and transferred to your email application.
+                <p className={`text-xs max-w-sm mx-auto ${isDark ? 'text-zinc-400' : 'text-slate-600'}`}>
+                  Your message was formatted with the topic "[{selectedTopic}]" and transferred to your email application.
                 </p>
                 <button
                   onClick={() => setFormStatus('idle')}
-                  className="mt-3 px-4 py-2 text-xs font-semibold text-white bg-zinc-800 rounded-xl hover:bg-zinc-700 transition-colors"
+                  className="mt-3 px-4 py-2 text-xs font-semibold text-white bg-zinc-800 rounded-xl hover:bg-zinc-700 transition-colors cursor-pointer"
                 >
                   Send Another Message
                 </button>
@@ -1125,7 +1135,7 @@ export default function App() {
                   <div>
                     <label
                       className={`block text-xs font-medium mb-1.5 ${
-                        isDark ? 'text-zinc-400' : 'text-zinc-600'
+                        isDark ? 'text-zinc-400' : 'text-slate-600'
                       }`}
                     >
                       Your Name
@@ -1136,17 +1146,17 @@ export default function App() {
                       value={formState.name}
                       onChange={(e) => setFormState({ ...formState, name: e.target.value })}
                       placeholder="e.g. Parag"
-                      className={`w-full px-3.5 py-2.5 rounded-xl border text-xs focus:outline-none focus:border-indigo-500 transition-colors ${
+                      className={`w-full px-3.5 py-2.5 rounded-xl border text-xs focus:outline-none focus:border-violet-500 transition-colors ${
                         isDark
                           ? 'bg-zinc-950 border-zinc-800 text-zinc-100'
-                          : 'bg-zinc-50 border-zinc-300 text-zinc-900'
+                          : 'bg-slate-50 border-slate-300 text-slate-900'
                       }`}
                     />
                   </div>
                   <div>
                     <label
                       className={`block text-xs font-medium mb-1.5 ${
-                        isDark ? 'text-zinc-400' : 'text-zinc-600'
+                        isDark ? 'text-zinc-400' : 'text-slate-600'
                       }`}
                     >
                       Your Email
@@ -1157,10 +1167,10 @@ export default function App() {
                       value={formState.email}
                       onChange={(e) => setFormState({ ...formState, email: e.target.value })}
                       placeholder="you@example.com"
-                      className={`w-full px-3.5 py-2.5 rounded-xl border text-xs focus:outline-none focus:border-indigo-500 transition-colors ${
+                      className={`w-full px-3.5 py-2.5 rounded-xl border text-xs focus:outline-none focus:border-violet-500 transition-colors ${
                         isDark
                           ? 'bg-zinc-950 border-zinc-800 text-zinc-100'
-                          : 'bg-zinc-50 border-zinc-300 text-zinc-900'
+                          : 'bg-slate-50 border-slate-300 text-slate-900'
                       }`}
                     />
                   </div>
@@ -1169,7 +1179,7 @@ export default function App() {
                 <div>
                   <label
                     className={`block text-xs font-medium mb-1.5 ${
-                      isDark ? 'text-zinc-400' : 'text-zinc-600'
+                      isDark ? 'text-zinc-400' : 'text-slate-600'
                     }`}
                   >
                     Message
@@ -1180,10 +1190,10 @@ export default function App() {
                     value={formState.message}
                     onChange={(e) => setFormState({ ...formState, message: e.target.value })}
                     placeholder="Your message here..."
-                    className={`w-full px-3.5 py-2.5 rounded-xl border text-xs focus:outline-none focus:border-indigo-500 transition-colors resize-none ${
+                    className={`w-full px-3.5 py-2.5 rounded-xl border text-xs focus:outline-none focus:border-violet-500 transition-colors resize-none ${
                       isDark
                         ? 'bg-zinc-950 border-zinc-800 text-zinc-100'
-                        : 'bg-zinc-50 border-zinc-300 text-zinc-900'
+                        : 'bg-slate-50 border-slate-300 text-slate-900'
                     }`}
                   ></textarea>
                 </div>
@@ -1191,7 +1201,7 @@ export default function App() {
                 <button
                   type="submit"
                   disabled={formStatus === 'submitting'}
-                  className="w-full py-3 px-4 bg-indigo-600 hover:bg-indigo-500 active:scale-[0.99] text-white font-semibold text-xs rounded-xl transition-all shadow-md shadow-indigo-600/20 flex items-center justify-center gap-2 disabled:opacity-50"
+                  className="w-full py-3 px-4 bg-gradient-to-r from-violet-600 to-indigo-600 hover:from-violet-500 hover:to-indigo-500 active:scale-[0.99] text-white font-semibold text-xs rounded-xl transition-all shadow-md shadow-violet-600/30 flex items-center justify-center gap-2 disabled:opacity-50 cursor-pointer"
                 >
                   {formStatus === 'submitting' ? (
                     <span>Opening Mail Client...</span>
@@ -1208,10 +1218,10 @@ export default function App() {
         </div>
       </motion.section>
 
-      {/* Footer with Inexa-style details */}
+      {/* Footer */}
       <footer
         className={`relative z-10 mt-auto py-8 px-6 border-t max-w-6xl mx-auto w-full flex flex-col sm:flex-row items-center justify-between gap-4 text-xs ${
-          isDark ? 'border-zinc-800/60 text-zinc-500' : 'border-zinc-200 text-zinc-500'
+          isDark ? 'border-zinc-800/60 text-zinc-500' : 'border-slate-200 text-slate-500'
         }`}
       >
         <div>
@@ -1222,13 +1232,13 @@ export default function App() {
             href={githubAddress}
             target="_blank"
             rel="noopener noreferrer"
-            className="hover:text-indigo-500 transition-colors"
+            className="hover:text-violet-500 transition-colors"
           >
             GitHub
           </a>
           <button
             onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-            className="hover:text-indigo-500 transition-colors flex items-center gap-1"
+            className="hover:text-violet-500 transition-colors flex items-center gap-1 cursor-pointer"
           >
             <span>Back to top</span>
             <ArrowUp className="w-3.5 h-3.5" />
@@ -1236,7 +1246,7 @@ export default function App() {
         </div>
       </footer>
 
-      {/* Floating Scroll to Top Button with Dynamic Circular Progress Indicator */}
+      {/* Floating Scroll to Top with Circular Progress Indicator */}
       <AnimatePresence>
         {showScrollTop && (
           <motion.div
@@ -1248,10 +1258,10 @@ export default function App() {
           >
             <button
               onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-              className={`relative p-3 rounded-full border shadow-2xl backdrop-blur-md transition-all active:scale-95 group flex items-center justify-center ${
+              className={`relative p-3 rounded-full border shadow-2xl backdrop-blur-md transition-all active:scale-95 group flex items-center justify-center cursor-pointer ${
                 isDark
-                  ? 'bg-zinc-900/90 border-zinc-700/80 text-indigo-400 hover:text-white hover:bg-zinc-800'
-                  : 'bg-white/90 border-zinc-300 text-indigo-600 hover:text-black hover:bg-zinc-50'
+                  ? 'bg-zinc-900/90 border-violet-500/30 text-violet-400 hover:text-white hover:bg-violet-950/40 shadow-violet-950/50'
+                  : 'bg-white/95 border-violet-200 text-violet-600 hover:text-black hover:bg-violet-50 shadow-violet-100'
               }`}
               aria-label="Scroll to top"
               title="Scroll to top"
@@ -1263,7 +1273,7 @@ export default function App() {
                   cy="24"
                   r="20"
                   fill="none"
-                  className={isDark ? 'stroke-zinc-800/60' : 'stroke-zinc-200'}
+                  className={isDark ? 'stroke-zinc-800/60' : 'stroke-slate-200'}
                   strokeWidth="2"
                 />
                 <motion.circle
@@ -1271,7 +1281,7 @@ export default function App() {
                   cy="24"
                   r="20"
                   fill="none"
-                  className="stroke-indigo-500"
+                  className="stroke-violet-500"
                   strokeWidth="2.5"
                   strokeDasharray="125.6"
                   style={{
