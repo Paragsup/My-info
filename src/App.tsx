@@ -13,8 +13,7 @@ import {
   Atom,
   Binary,
   FlaskConical,
-  Github,
-  Linkedin
+  Github
 } from 'lucide-react';
 
 export default function App() {
@@ -33,8 +32,7 @@ export default function App() {
   const [formStatus, setFormStatus] = useState<'idle' | 'submitting' | 'success'>('idle');
 
   const emailAddress = "paragpareta@gmail.com";
-  const githubAddress = "https://github.com/paragpareta";
-  const linkedinAddress = "https://linkedin.com/in/paragpareta";
+  const githubAddress = "https://github.com/paragsup";
 
   useEffect(() => {
     const handleScroll = () => {
@@ -380,27 +378,7 @@ export default function App() {
                 <div>
                   <p className="text-xs text-zinc-400">GitHub</p>
                   <p className="text-sm font-medium text-zinc-200 group-hover:text-white transition-colors">
-                    github.com/paragpareta
-                  </p>
-                </div>
-              </div>
-              <ArrowUpRight className="w-4 h-4 text-zinc-500 group-hover:text-white transition-colors" />
-            </a>
-
-            <a
-              href={linkedinAddress}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="p-4 bg-zinc-900/60 border border-zinc-800 rounded-xl flex items-center justify-between hover:border-zinc-700 transition-colors group"
-            >
-              <div className="flex items-center gap-3">
-                <div className="w-9 h-9 rounded-lg bg-zinc-800 flex items-center justify-center text-indigo-400">
-                  <Linkedin className="w-4 h-4" />
-                </div>
-                <div>
-                  <p className="text-xs text-zinc-400">LinkedIn</p>
-                  <p className="text-sm font-medium text-zinc-200 group-hover:text-white transition-colors">
-                    linkedin.com/in/paragpareta
+                    github.com/paragsup
                   </p>
                 </div>
               </div>
