@@ -25,10 +25,7 @@ import {
   Moon,
   Sparkles,
   ChevronRight,
-  BookOpen,
-  Compass,
-  Layers,
-  GraduationCap
+  BookOpen
 } from 'lucide-react';
 
 interface SubjectInfo {
@@ -62,7 +59,7 @@ export default function App() {
   const emailAddress = "paragpareta@gmail.com";
   const githubAddress = "https://github.com/paragsup";
 
-  // Scroll animations & progress
+  // Scroll animations & progress (used for circular scroll button & parallax)
   const { scrollY, scrollYProgress } = useScroll();
   const smoothProgress = useSpring(scrollYProgress, {
     stiffness: 90,
@@ -211,7 +208,7 @@ export default function App() {
 
   return (
     <div
-      className={`min-h-screen transition-colors duration-400 font-sans antialiased selection:bg-violet-500/30 selection:text-violet-200 flex flex-col relative overflow-x-hidden ${
+      className={`min-h-screen theme-smooth-transition font-sans antialiased selection:bg-violet-500/30 selection:text-violet-200 flex flex-col relative overflow-x-hidden ${
         isDark ? 'bg-[#08090d] text-zinc-100' : 'bg-[#f8f9fd] text-slate-900'
       }`}
     >
@@ -240,26 +237,22 @@ export default function App() {
         />
       </div>
 
-      {/* Sticky Top Header */}
+      {/* Sticky Top Header (Top line on scroll removed per user request) */}
       <header
-        className={`sticky top-0 z-40 backdrop-blur-xl border-b transition-colors duration-300 ${
+        className={`sticky top-0 z-40 backdrop-blur-xl border-b transition-colors duration-400 ${
           isDark
             ? 'bg-[#08090d]/85 border-zinc-800/80 shadow-2xl shadow-black/40'
             : 'bg-[#f8f9fd]/85 border-slate-200/90 shadow-sm shadow-slate-200/50'
         }`}
       >
-        {/* Neon Reading Progress Bar */}
-        <motion.div
-          style={{ scaleX: smoothProgress }}
-          className="absolute bottom-0 left-0 right-0 h-[2.5px] bg-gradient-to-r from-violet-500 via-indigo-500 to-cyan-400 origin-left z-50 pointer-events-none"
-        />
-
         <div className="max-w-6xl mx-auto px-6 h-18 flex items-center justify-between relative z-10">
-          {/* Logo Wordmark */}
-          <a
+          {/* Logo Wordmark with Microinteraction */}
+          <motion.a
             href="#home"
+            whileHover={{ scale: 1.03 }}
+            whileTap={{ scale: 0.97 }}
             onClick={(e) => scrollToSection(e, 'home')}
-            className="flex items-center gap-2.5 group"
+            className="flex items-center gap-2.5 group cursor-pointer"
           >
             <div
               className={`w-9 h-9 rounded-xl flex items-center justify-center font-bold text-sm tracking-tight border transition-all duration-300 group-hover:scale-105 ${
@@ -283,11 +276,11 @@ export default function App() {
                 jee aspirant
               </span>
             </div>
-          </a>
+          </motion.a>
 
-          {/* Floating Pill Navigation with Spring Animation */}
+          {/* Floating Pill Navigation with Spring Microinteractions */}
           <nav
-            className={`hidden md:flex items-center gap-1 p-1 rounded-full border text-sm font-medium transition-colors ${
+            className={`hidden md:flex items-center gap-1 p-1 rounded-full border text-sm font-medium transition-colors duration-400 ${
               isDark
                 ? 'bg-zinc-900/70 border-zinc-800/80 text-zinc-400 backdrop-blur-md'
                 : 'bg-white/80 border-slate-200 text-slate-600 shadow-sm backdrop-blur-md'
@@ -301,11 +294,13 @@ export default function App() {
             ].map((item) => {
               const isActive = activeNav === item.id;
               return (
-                <a
+                <motion.a
                   key={item.id}
                   href={`#${item.id}`}
+                  whileHover={{ y: -1, scale: 1.03 }}
+                  whileTap={{ scale: 0.95 }}
                   onClick={(e) => scrollToSection(e, item.id)}
-                  className={`relative px-4 py-1.5 rounded-full transition-all duration-200 ${
+                  className={`relative px-4 py-1.5 rounded-full transition-all duration-200 cursor-pointer ${
                     isActive
                       ? isDark
                         ? 'text-white font-semibold'
@@ -327,17 +322,19 @@ export default function App() {
                     />
                   )}
                   <span className="relative z-10">{item.label}</span>
-                </a>
+                </motion.a>
               );
             })}
           </nav>
 
           {/* Right Header Actions */}
           <div className="flex items-center gap-3">
-            {/* Theme Toggle Button */}
-            <button
+            {/* Theme Toggle Button with Smooth Animated Morph */}
+            <motion.button
+              whileHover={{ scale: 1.08, rotate: 12 }}
+              whileTap={{ scale: 0.9, rotate: -25 }}
               onClick={() => setTheme(isDark ? 'light' : 'dark')}
-              className={`p-2.5 rounded-xl border transition-all active:scale-90 flex items-center justify-center ${
+              className={`p-2.5 rounded-xl border transition-all duration-300 flex items-center justify-center cursor-pointer ${
                 isDark
                   ? 'bg-zinc-900/80 border-zinc-800 text-amber-400 hover:border-zinc-700 hover:bg-zinc-800'
                   : 'bg-white border-slate-200 text-violet-600 hover:border-slate-300 hover:bg-slate-50 shadow-sm'
@@ -345,21 +342,46 @@ export default function App() {
               title={isDark ? 'Switch to light mode' : 'Switch to dark mode'}
               aria-label="Toggle color theme"
             >
-              {isDark ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
-            </button>
+              <AnimatePresence mode="wait" initial={false}>
+                {isDark ? (
+                  <motion.div
+                    key="sun"
+                    initial={{ rotate: -90, scale: 0.2, opacity: 0 }}
+                    animate={{ rotate: 0, scale: 1, opacity: 1 }}
+                    exit={{ rotate: 90, scale: 0.2, opacity: 0 }}
+                    transition={{ duration: 0.25, ease: "easeOut" }}
+                  >
+                    <Sun className="w-4 h-4 text-amber-400" />
+                  </motion.div>
+                ) : (
+                  <motion.div
+                    key="moon"
+                    initial={{ rotate: 90, scale: 0.2, opacity: 0 }}
+                    animate={{ rotate: 0, scale: 1, opacity: 1 }}
+                    exit={{ rotate: -90, scale: 0.2, opacity: 0 }}
+                    transition={{ duration: 0.25, ease: "easeOut" }}
+                  >
+                    <Moon className="w-4 h-4 text-violet-600" />
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </motion.button>
 
-            {/* Inexa Style "Say Hello" CTA */}
-            <a
+            {/* Inexa Style "Say Hello" CTA with Microinteraction */}
+            <motion.a
               href="#contact"
+              whileHover={{ scale: 1.04, y: -1 }}
+              whileTap={{ scale: 0.94 }}
               onClick={(e) => scrollToSection(e, 'contact')}
-              className="hidden sm:inline-flex items-center gap-1.5 px-4.5 py-2 text-xs font-semibold text-white bg-gradient-to-r from-violet-600 to-indigo-600 hover:from-violet-500 hover:to-indigo-500 active:scale-95 transition-all rounded-xl shadow-md shadow-violet-600/25"
+              className="hidden sm:inline-flex items-center gap-1.5 px-4.5 py-2 text-xs font-semibold text-white bg-gradient-to-r from-violet-600 to-indigo-600 hover:from-violet-500 hover:to-indigo-500 transition-all rounded-xl shadow-md shadow-violet-600/25 group cursor-pointer"
             >
               <span>Say Hello</span>
-              <ArrowUpRight className="w-3.5 h-3.5" />
-            </a>
+              <ArrowUpRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
+            </motion.a>
 
             {/* Mobile menu hamburger */}
-            <button
+            <motion.button
+              whileTap={{ scale: 0.92 }}
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
               className={`md:hidden p-2 rounded-xl border transition-colors ${
                 isDark
@@ -369,7 +391,7 @@ export default function App() {
               aria-label="Toggle navigation menu"
             >
               {isMobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
-            </button>
+            </motion.button>
           </div>
         </div>
 
@@ -434,8 +456,9 @@ export default function App() {
             className="lg:col-span-7 space-y-6"
           >
             {/* Status Pill with Neon Dot */}
-            <div
-              className={`inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full border text-xs font-medium tracking-wide shadow-xs ${
+            <motion.div
+              whileHover={{ scale: 1.03 }}
+              className={`inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full border text-xs font-medium tracking-wide shadow-xs cursor-default ${
                 isDark
                   ? 'bg-zinc-900/80 border-violet-500/20 text-zinc-300'
                   : 'bg-white border-violet-200 text-violet-950'
@@ -443,7 +466,7 @@ export default function App() {
             >
               <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse shadow-xs shadow-emerald-400/50" />
               <span>Student · Preparing for JEE (India)</span>
-            </div>
+            </motion.div>
 
             <div className="space-y-3">
               <h1 className="text-4xl sm:text-6xl lg:text-7xl font-black tracking-tight leading-[1.08]">
@@ -471,30 +494,36 @@ export default function App() {
             </p>
 
             <div className="flex flex-wrap items-center gap-4 pt-2">
-              <a
+              <motion.a
                 href="#subjects"
+                whileHover={{ scale: 1.04, y: -2 }}
+                whileTap={{ scale: 0.94 }}
                 onClick={(e) => scrollToSection(e, 'subjects')}
-                className="px-6 py-3 text-sm font-semibold text-white bg-gradient-to-r from-violet-600 to-indigo-600 hover:from-violet-500 hover:to-indigo-500 active:scale-95 transition-all rounded-xl shadow-lg shadow-violet-600/30 inline-flex items-center gap-2 group"
+                className="px-6 py-3 text-sm font-semibold text-white bg-gradient-to-r from-violet-600 to-indigo-600 hover:from-violet-500 hover:to-indigo-500 transition-all rounded-xl shadow-lg shadow-violet-600/30 inline-flex items-center gap-2 group cursor-pointer"
               >
                 <span>View Core Subjects</span>
-                <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-              </a>
+                <ArrowRight className="w-4 h-4 group-hover:translate-x-1.5 transition-transform" />
+              </motion.a>
 
-              <a
+              <motion.a
                 href="#contact"
+                whileHover={{ scale: 1.03, y: -1 }}
+                whileTap={{ scale: 0.95 }}
                 onClick={(e) => scrollToSection(e, 'contact')}
-                className={`px-6 py-3 text-sm font-semibold rounded-xl border active:scale-95 transition-all ${
+                className={`px-6 py-3 text-sm font-semibold rounded-xl border transition-all cursor-pointer ${
                   isDark
                     ? 'bg-zinc-900/90 border-zinc-800 text-zinc-300 hover:text-white hover:border-zinc-700'
                     : 'bg-white border-slate-300 text-slate-800 hover:text-black hover:border-slate-400 shadow-sm'
                 }`}
               >
                 Contact Me
-              </a>
+              </motion.a>
 
-              <button
+              <motion.button
+                whileHover={{ scale: 1.04, y: -1 }}
+                whileTap={{ scale: 0.93 }}
                 onClick={handleCopyEmail}
-                className={`px-4 py-3 text-sm font-medium rounded-xl border active:scale-95 transition-all inline-flex items-center gap-2 ${
+                className={`px-4 py-3 text-sm font-medium rounded-xl border transition-all inline-flex items-center gap-2 cursor-pointer ${
                   isDark
                     ? 'bg-zinc-900/60 border-zinc-800 text-zinc-400 hover:text-zinc-200 hover:border-zinc-700'
                     : 'bg-slate-100 border-slate-200 text-slate-600 hover:text-slate-900'
@@ -511,7 +540,7 @@ export default function App() {
                     <span className="text-xs">Copy Email</span>
                   </>
                 )}
-              </button>
+              </motion.button>
             </div>
           </motion.div>
 
@@ -523,12 +552,14 @@ export default function App() {
             className="lg:col-span-5 flex justify-center relative"
           >
             <div className="relative w-full max-w-sm sm:max-w-md animate-float-card">
-              {/* Outer Card with Vibrant Glass Gradient */}
-              <div
+              {/* Outer Card with Vibrant Glass Gradient & Hover Microinteraction */}
+              <motion.div
+                whileHover={{ y: -4, scale: 1.01 }}
+                transition={{ duration: 0.25 }}
                 className={`relative rounded-3xl p-6 border transition-all duration-300 overflow-hidden ${
                   isDark
-                    ? 'bg-gradient-to-b from-[#121422]/95 to-[#0b0c14]/95 border-violet-500/25 shadow-2xl shadow-violet-950/30'
-                    : 'bg-white border-slate-200/90 shadow-2xl shadow-indigo-100/80'
+                    ? 'bg-gradient-to-b from-[#121422]/95 to-[#0b0c14]/95 border-violet-500/25 shadow-2xl shadow-violet-950/30 hover:border-violet-500/40'
+                    : 'bg-white border-slate-200/90 shadow-2xl shadow-indigo-100/80 hover:border-violet-300'
                 }`}
               >
                 {/* Decorative Window Controls */}
@@ -550,7 +581,7 @@ export default function App() {
                 {/* Profile Card Body */}
                 <div className="space-y-4">
                   <div
-                    className={`p-5 rounded-2xl border ${
+                    className={`p-5 rounded-2xl border transition-colors ${
                       isDark
                         ? 'bg-[#08090f]/80 border-zinc-800/80'
                         : 'bg-slate-50/80 border-slate-200'
@@ -569,35 +600,38 @@ export default function App() {
                     </p>
                   </div>
 
-                  {/* 3 Subject Meters inspired by Inexa */}
+                  {/* 3 Subject Meters inspired by Inexa with Microinteraction */}
                   <div className="grid grid-cols-3 gap-2.5 text-center">
-                    <div
-                      className={`p-3 rounded-xl border transition-colors ${
-                        isDark ? 'bg-zinc-900/50 border-zinc-800' : 'bg-white border-slate-200 shadow-xs'
+                    <motion.div
+                      whileHover={{ scale: 1.05, y: -2 }}
+                      className={`p-3 rounded-xl border transition-colors cursor-default ${
+                        isDark ? 'bg-zinc-900/50 border-zinc-800 hover:border-violet-500/30' : 'bg-white border-slate-200 shadow-xs hover:border-violet-300'
                       }`}
                     >
                       <Atom className="w-4 h-4 mx-auto text-violet-400 mb-1" />
                       <p className="text-xs font-bold">Physics</p>
                       <p className={`text-[10px] ${isDark ? 'text-zinc-400' : 'text-slate-500'}`}>Core</p>
-                    </div>
-                    <div
-                      className={`p-3 rounded-xl border transition-colors ${
-                        isDark ? 'bg-zinc-900/50 border-zinc-800' : 'bg-white border-slate-200 shadow-xs'
+                    </motion.div>
+                    <motion.div
+                      whileHover={{ scale: 1.05, y: -2 }}
+                      className={`p-3 rounded-xl border transition-colors cursor-default ${
+                        isDark ? 'bg-zinc-900/50 border-zinc-800 hover:border-cyan-500/30' : 'bg-white border-slate-200 shadow-xs hover:border-cyan-300'
                       }`}
                     >
                       <Binary className="w-4 h-4 mx-auto text-cyan-400 mb-1" />
                       <p className="text-xs font-bold">Math</p>
                       <p className={`text-[10px] ${isDark ? 'text-zinc-400' : 'text-slate-500'}`}>Core</p>
-                    </div>
-                    <div
-                      className={`p-3 rounded-xl border transition-colors ${
-                        isDark ? 'bg-zinc-900/50 border-zinc-800' : 'bg-white border-slate-200 shadow-xs'
+                    </motion.div>
+                    <motion.div
+                      whileHover={{ scale: 1.05, y: -2 }}
+                      className={`p-3 rounded-xl border transition-colors cursor-default ${
+                        isDark ? 'bg-zinc-900/50 border-zinc-800 hover:border-fuchsia-500/30' : 'bg-white border-slate-200 shadow-xs hover:border-fuchsia-300'
                       }`}
                     >
                       <FlaskConical className="w-4 h-4 mx-auto text-fuchsia-400 mb-1" />
                       <p className="text-xs font-bold">Chemistry</p>
                       <p className={`text-[10px] ${isDark ? 'text-zinc-400' : 'text-slate-500'}`}>Core</p>
-                    </div>
+                    </motion.div>
                   </div>
 
                   {/* Quote / Dedication */}
@@ -611,11 +645,15 @@ export default function App() {
                     "Building deep conceptual clarity before building software products. Focused on competitive examination fundamentals."
                   </div>
                 </div>
-              </div>
+              </motion.div>
 
-              {/* The Signature Inexa Rotating Purple Stamp Badge */}
+              {/* The Signature Inexa Rotating Purple Stamp Badge with Hover Microinteraction */}
               <div className="absolute -bottom-6 -right-6 sm:-bottom-8 sm:-right-8 z-30">
-                <div className="relative w-28 h-28 sm:w-32 sm:h-32 flex items-center justify-center group cursor-pointer">
+                <motion.div
+                  whileHover={{ scale: 1.15 }}
+                  whileTap={{ scale: 0.95 }}
+                  className="relative w-28 h-28 sm:w-32 sm:h-32 flex items-center justify-center group cursor-pointer"
+                >
                   {/* Rotating Circular Text Ribbon */}
                   <div className="absolute inset-0 animate-spin-badge">
                     <svg className="w-full h-full" viewBox="0 0 100 100">
@@ -635,10 +673,10 @@ export default function App() {
                   </div>
 
                   {/* Eye-catching Purple Center Bubble Badge (Inexa signature) */}
-                  <div className="w-14 h-14 rounded-full bg-gradient-to-tr from-violet-600 via-indigo-600 to-purple-500 shadow-xl shadow-violet-600/40 border-2 border-white/30 flex items-center justify-center text-white transition-transform group-hover:scale-110">
+                  <div className="w-14 h-14 rounded-full bg-gradient-to-tr from-violet-600 via-indigo-600 to-purple-500 shadow-xl shadow-violet-600/40 border-2 border-white/30 flex items-center justify-center text-white transition-transform duration-300 group-hover:scale-110">
                     <Sparkles className="w-5 h-5 animate-pulse" />
                   </div>
-                </div>
+                </motion.div>
               </div>
             </div>
           </motion.div>
@@ -647,7 +685,7 @@ export default function App() {
 
       {/* Infinite Horizontal Smooth Marquee Track */}
       <div
-        className={`w-full py-4.5 border-y overflow-hidden whitespace-nowrap relative select-none transition-colors ${
+        className={`w-full py-4.5 border-y overflow-hidden whitespace-nowrap relative select-none transition-colors duration-400 ${
           isDark
             ? 'bg-[#0b0c14]/90 border-zinc-800/80'
             : 'bg-slate-100/90 border-slate-200 shadow-inner'
@@ -710,10 +748,12 @@ export default function App() {
               I have not built software projects yet, as my energy is channeled toward competitive entrance examination success and earning an engineering seat.
             </p>
 
-            {/* Inexa-style 3 Subject Percentage Progress Rings */}
+            {/* Inexa-style 3 Subject Percentage Progress Rings with Microinteractions */}
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-4">
-              <div
-                className={`p-5 rounded-2xl border transition-all duration-300 hover:-translate-y-1 ${
+              <motion.div
+                whileHover={{ y: -5, scale: 1.02 }}
+                transition={{ duration: 0.2 }}
+                className={`p-5 rounded-2xl border transition-all duration-300 cursor-default ${
                   isDark
                     ? 'bg-[#10121d] border-zinc-800/80 hover:border-violet-500/40'
                     : 'bg-white border-slate-200 shadow-sm hover:border-violet-300'
@@ -729,10 +769,12 @@ export default function App() {
                 <p className={`text-xs mt-3 leading-relaxed ${isDark ? 'text-zinc-400' : 'text-slate-500'}`}>
                   Conceptual principles & vector mechanics drills.
                 </p>
-              </div>
+              </motion.div>
 
-              <div
-                className={`p-5 rounded-2xl border transition-all duration-300 hover:-translate-y-1 ${
+              <motion.div
+                whileHover={{ y: -5, scale: 1.02 }}
+                transition={{ duration: 0.2 }}
+                className={`p-5 rounded-2xl border transition-all duration-300 cursor-default ${
                   isDark
                     ? 'bg-[#10121d] border-zinc-800/80 hover:border-cyan-500/40'
                     : 'bg-white border-slate-200 shadow-sm hover:border-cyan-300'
@@ -748,10 +790,12 @@ export default function App() {
                 <p className={`text-xs mt-3 leading-relaxed ${isDark ? 'text-zinc-400' : 'text-slate-500'}`}>
                   Calculus, vectors & multi-step problems.
                 </p>
-              </div>
+              </motion.div>
 
-              <div
-                className={`p-5 rounded-2xl border transition-all duration-300 hover:-translate-y-1 ${
+              <motion.div
+                whileHover={{ y: -5, scale: 1.02 }}
+                transition={{ duration: 0.2 }}
+                className={`p-5 rounded-2xl border transition-all duration-300 cursor-default ${
                   isDark
                     ? 'bg-[#10121d] border-zinc-800/80 hover:border-fuchsia-500/40'
                     : 'bg-white border-slate-200 shadow-sm hover:border-fuchsia-300'
@@ -767,7 +811,7 @@ export default function App() {
                 <p className={`text-xs mt-3 leading-relaxed ${isDark ? 'text-zinc-400' : 'text-slate-500'}`}>
                   Organic reaction pathways & equilibrium.
                 </p>
-              </div>
+              </motion.div>
             </div>
           </div>
         </div>
@@ -798,15 +842,16 @@ export default function App() {
           </p>
         </div>
 
-        {/* Big Typography Interactive Rows */}
+        {/* Big Typography Interactive Rows with Click & Hover Microinteractions */}
         <div className="space-y-4">
           {subjects.map((sub) => {
             const isSelected = activeSubjectId === sub.id;
-            const Icon = sub.icon;
 
             return (
-              <div
+              <motion.div
                 key={sub.id}
+                whileHover={{ scale: 1.008 }}
+                transition={{ duration: 0.2 }}
                 className={`rounded-2xl border transition-all duration-300 overflow-hidden ${
                   isSelected
                     ? isDark
@@ -818,7 +863,8 @@ export default function App() {
                 }`}
               >
                 {/* Row Header Trigger */}
-                <button
+                <motion.button
+                  whileTap={{ scale: 0.995 }}
                   onClick={() => setActiveSubjectId(isSelected ? '' : sub.id)}
                   className="w-full p-6 sm:p-8 flex items-center justify-between text-left gap-4 group cursor-pointer"
                 >
@@ -849,7 +895,9 @@ export default function App() {
                   </div>
 
                   <div className="flex items-center gap-3">
-                    <div
+                    <motion.div
+                      whileHover={{ scale: 1.1 }}
+                      whileTap={{ scale: 0.9 }}
                       className={`w-11 h-11 rounded-xl border flex items-center justify-center transition-all duration-300 ${
                         isSelected
                           ? 'rotate-90 bg-gradient-to-r from-violet-600 to-indigo-600 border-violet-400 text-white shadow-md shadow-violet-600/30'
@@ -859,9 +907,9 @@ export default function App() {
                       }`}
                     >
                       <ChevronRight className="w-5 h-5" />
-                    </div>
+                    </motion.div>
                   </div>
-                </button>
+                </motion.button>
 
                 {/* Animated Drawer Body */}
                 <AnimatePresence>
@@ -898,17 +946,19 @@ export default function App() {
                           </p>
                           <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
                             {sub.topics.map((t, idx) => (
-                              <div
+                              <motion.div
                                 key={idx}
-                                className={`p-3.5 rounded-xl border text-xs flex items-center gap-3 transition-colors ${
+                                whileHover={{ x: 4, scale: 1.01 }}
+                                transition={{ duration: 0.15 }}
+                                className={`p-3.5 rounded-xl border text-xs flex items-center gap-3 transition-colors cursor-default ${
                                   isDark
                                     ? 'bg-[#10121e]/80 border-zinc-800/80 text-zinc-300 hover:border-violet-500/30'
-                                    : 'bg-white border-slate-200 text-slate-800 hover:border-violet-300'
+                                    : 'bg-white border-slate-200 text-slate-800 hover:border-violet-300 shadow-xs'
                                 }`}
                               >
                                 <span className="w-2 h-2 rounded-full bg-violet-500 shrink-0 shadow-xs shadow-violet-500/50" />
                                 <span className="font-medium">{t}</span>
-                              </div>
+                              </motion.div>
                             ))}
                           </div>
                         </div>
@@ -916,7 +966,7 @@ export default function App() {
                     </motion.div>
                   )}
                 </AnimatePresence>
-              </div>
+              </motion.div>
             );
           })}
         </div>
@@ -924,7 +974,7 @@ export default function App() {
 
       {/* High-Contrast Highlights Banner */}
       <section
-        className={`py-16 px-6 border-b transition-colors ${
+        className={`py-16 px-6 border-b transition-colors duration-400 ${
           isDark
             ? 'bg-gradient-to-r from-[#121424] to-[#0d0e17] border-violet-500/20'
             : 'bg-gradient-to-r from-slate-900 to-indigo-950 text-white border-slate-900 shadow-xl'
@@ -944,13 +994,15 @@ export default function App() {
           </div>
 
           <div className="flex items-center gap-3">
-            <a
+            <motion.a
               href="#contact"
+              whileHover={{ scale: 1.05, y: -2 }}
+              whileTap={{ scale: 0.94 }}
               onClick={(e) => scrollToSection(e, 'contact')}
-              className="px-6 py-3 text-xs font-semibold text-white bg-gradient-to-r from-violet-600 to-indigo-600 hover:from-violet-500 hover:to-indigo-500 active:scale-95 transition-all rounded-xl shadow-lg shadow-violet-600/30"
+              className="px-6 py-3 text-xs font-semibold text-white bg-gradient-to-r from-violet-600 to-indigo-600 hover:from-violet-500 hover:to-indigo-500 transition-all rounded-xl shadow-lg shadow-violet-600/30 cursor-pointer"
             >
               Get In Touch
-            </a>
+            </motion.a>
           </div>
         </div>
       </section>
@@ -983,12 +1035,14 @@ export default function App() {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-10">
           {/* Left Cards */}
           <div className="lg:col-span-5 space-y-4">
-            {/* Direct Email Card */}
-            <div
+            {/* Direct Email Card with Microinteraction */}
+            <motion.div
+              whileHover={{ y: -3, scale: 1.01 }}
+              transition={{ duration: 0.2 }}
               className={`p-5 rounded-2xl border flex items-center justify-between transition-colors ${
                 isDark
-                  ? 'bg-[#10121d] border-zinc-800/80 shadow-md shadow-black/20'
-                  : 'bg-white border-slate-200 shadow-sm'
+                  ? 'bg-[#10121d] border-zinc-800/80 shadow-md shadow-black/20 hover:border-violet-500/40'
+                  : 'bg-white border-slate-200 shadow-sm hover:border-violet-300'
               }`}
             >
               <div className="flex items-center gap-3.5">
@@ -1009,7 +1063,9 @@ export default function App() {
                   </a>
                 </div>
               </div>
-              <button
+              <motion.button
+                whileHover={{ scale: 1.15 }}
+                whileTap={{ scale: 0.88 }}
                 onClick={handleCopyEmail}
                 className={`p-2.5 rounded-xl border transition-colors cursor-pointer ${
                   isDark
@@ -1019,15 +1075,18 @@ export default function App() {
                 title="Copy email address"
               >
                 {copiedEmail ? <Check className="w-4 h-4 text-emerald-400" /> : <Copy className="w-4 h-4" />}
-              </button>
-            </div>
+              </motion.button>
+            </motion.div>
 
-            {/* GitHub Card */}
-            <a
+            {/* GitHub Card with Microinteraction */}
+            <motion.a
               href={githubAddress}
               target="_blank"
               rel="noopener noreferrer"
-              className={`p-5 rounded-2xl border flex items-center justify-between transition-all group ${
+              whileHover={{ y: -3, scale: 1.01 }}
+              whileTap={{ scale: 0.98 }}
+              transition={{ duration: 0.2 }}
+              className={`p-5 rounded-2xl border flex items-center justify-between transition-all group cursor-pointer ${
                 isDark
                   ? 'bg-[#10121d] border-zinc-800/80 hover:border-violet-500/40 shadow-md shadow-black/20'
                   : 'bg-white border-slate-200 hover:border-violet-300 shadow-sm'
@@ -1048,11 +1107,12 @@ export default function App() {
                   </p>
                 </div>
               </div>
-              <ArrowUpRight className="w-4 h-4 text-zinc-400 group-hover:text-violet-500 transition-colors" />
-            </a>
+              <ArrowUpRight className="w-4 h-4 text-zinc-400 group-hover:text-violet-500 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all" />
+            </motion.a>
 
             {/* Giant Inexa Email Highlight Box */}
-            <div
+            <motion.div
+              whileHover={{ y: -2 }}
               className={`p-6 rounded-2xl border text-center transition-colors ${
                 isDark
                   ? 'bg-gradient-to-b from-[#131526]/60 to-[#0c0d16] border-violet-500/25'
@@ -1068,12 +1128,12 @@ export default function App() {
               >
                 {emailAddress}
               </a>
-            </div>
+            </motion.div>
           </div>
 
           {/* Right: Message Form */}
           <div
-            className={`lg:col-span-7 p-6 sm:p-8 rounded-3xl border ${
+            className={`lg:col-span-7 p-6 sm:p-8 rounded-3xl border transition-colors duration-400 ${
               isDark
                 ? 'bg-[#10121d]/90 border-zinc-800/80 shadow-2xl shadow-black/30'
                 : 'bg-white border-slate-200 shadow-lg shadow-slate-100'
@@ -1081,7 +1141,7 @@ export default function App() {
           >
             <h3 className="text-base font-bold mb-4">Send a Direct Message</h3>
 
-            {/* Topic Selector Pills */}
+            {/* Topic Selector Pills with Microinteractions */}
             <div className="mb-6">
               <label
                 className={`block text-xs font-mono uppercase tracking-wider mb-2.5 font-semibold ${
@@ -1094,9 +1154,11 @@ export default function App() {
                 {['General Hello', 'Study Discussion', 'Academic Query'].map((topic) => {
                   const isSelected = selectedTopic === topic;
                   return (
-                    <button
+                    <motion.button
                       key={topic}
                       type="button"
+                      whileHover={{ scale: 1.06, y: -1 }}
+                      whileTap={{ scale: 0.93 }}
                       onClick={() => setSelectedTopic(topic)}
                       className={`px-4 py-1.5 rounded-full text-xs font-medium border transition-all cursor-pointer ${
                         isSelected
@@ -1107,7 +1169,7 @@ export default function App() {
                       }`}
                     >
                       {topic}
-                    </button>
+                    </motion.button>
                   );
                 })}
               </div>
@@ -1122,12 +1184,14 @@ export default function App() {
                 <p className={`text-xs max-w-sm mx-auto ${isDark ? 'text-zinc-400' : 'text-slate-600'}`}>
                   Your message was formatted with the topic "[{selectedTopic}]" and transferred to your email application.
                 </p>
-                <button
+                <motion.button
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
                   onClick={() => setFormStatus('idle')}
                   className="mt-3 px-4 py-2 text-xs font-semibold text-white bg-zinc-800 rounded-xl hover:bg-zinc-700 transition-colors cursor-pointer"
                 >
                   Send Another Message
-                </button>
+                </motion.button>
               </div>
             ) : (
               <form onSubmit={handleFormSubmit} className="space-y-4">
@@ -1146,7 +1210,7 @@ export default function App() {
                       value={formState.name}
                       onChange={(e) => setFormState({ ...formState, name: e.target.value })}
                       placeholder="e.g. Parag"
-                      className={`w-full px-3.5 py-2.5 rounded-xl border text-xs focus:outline-none focus:border-violet-500 transition-colors ${
+                      className={`w-full px-3.5 py-2.5 rounded-xl border text-xs focus:outline-none focus:ring-2 focus:ring-violet-500/20 focus:border-violet-500 transition-all ${
                         isDark
                           ? 'bg-zinc-950 border-zinc-800 text-zinc-100'
                           : 'bg-slate-50 border-slate-300 text-slate-900'
@@ -1167,7 +1231,7 @@ export default function App() {
                       value={formState.email}
                       onChange={(e) => setFormState({ ...formState, email: e.target.value })}
                       placeholder="you@example.com"
-                      className={`w-full px-3.5 py-2.5 rounded-xl border text-xs focus:outline-none focus:border-violet-500 transition-colors ${
+                      className={`w-full px-3.5 py-2.5 rounded-xl border text-xs focus:outline-none focus:ring-2 focus:ring-violet-500/20 focus:border-violet-500 transition-all ${
                         isDark
                           ? 'bg-zinc-950 border-zinc-800 text-zinc-100'
                           : 'bg-slate-50 border-slate-300 text-slate-900'
@@ -1190,7 +1254,7 @@ export default function App() {
                     value={formState.message}
                     onChange={(e) => setFormState({ ...formState, message: e.target.value })}
                     placeholder="Your message here..."
-                    className={`w-full px-3.5 py-2.5 rounded-xl border text-xs focus:outline-none focus:border-violet-500 transition-colors resize-none ${
+                    className={`w-full px-3.5 py-2.5 rounded-xl border text-xs focus:outline-none focus:ring-2 focus:ring-violet-500/20 focus:border-violet-500 transition-all resize-none ${
                       isDark
                         ? 'bg-zinc-950 border-zinc-800 text-zinc-100'
                         : 'bg-slate-50 border-slate-300 text-slate-900'
@@ -1198,20 +1262,22 @@ export default function App() {
                   ></textarea>
                 </div>
 
-                <button
+                <motion.button
                   type="submit"
                   disabled={formStatus === 'submitting'}
-                  className="w-full py-3 px-4 bg-gradient-to-r from-violet-600 to-indigo-600 hover:from-violet-500 hover:to-indigo-500 active:scale-[0.99] text-white font-semibold text-xs rounded-xl transition-all shadow-md shadow-violet-600/30 flex items-center justify-center gap-2 disabled:opacity-50 cursor-pointer"
+                  whileHover={{ scale: 1.02, y: -1 }}
+                  whileTap={{ scale: 0.96 }}
+                  className="w-full py-3 px-4 bg-gradient-to-r from-violet-600 to-indigo-600 hover:from-violet-500 hover:to-indigo-500 active:scale-[0.99] text-white font-semibold text-xs rounded-xl transition-all shadow-md shadow-violet-600/30 flex items-center justify-center gap-2 disabled:opacity-50 cursor-pointer group"
                 >
                   {formStatus === 'submitting' ? (
                     <span>Opening Mail Client...</span>
                   ) : (
                     <>
                       <span>Send Message</span>
-                      <Send className="w-3.5 h-3.5" />
+                      <Send className="w-3.5 h-3.5 group-hover:translate-x-1 group-hover:-translate-y-0.5 transition-transform" />
                     </>
                   )}
-                </button>
+                </motion.button>
               </form>
             )}
           </div>
@@ -1220,7 +1286,7 @@ export default function App() {
 
       {/* Footer */}
       <footer
-        className={`relative z-10 mt-auto py-8 px-6 border-t max-w-6xl mx-auto w-full flex flex-col sm:flex-row items-center justify-between gap-4 text-xs ${
+        className={`relative z-10 mt-auto py-8 px-6 border-t max-w-6xl mx-auto w-full flex flex-col sm:flex-row items-center justify-between gap-4 text-xs transition-colors duration-400 ${
           isDark ? 'border-zinc-800/60 text-zinc-500' : 'border-slate-200 text-slate-500'
         }`}
       >
@@ -1228,25 +1294,28 @@ export default function App() {
           <span>© 2026 Parag Pareta · JEE Aspirant · India</span>
         </div>
         <div className="flex items-center gap-6">
-          <a
+          <motion.a
+            whileHover={{ scale: 1.05 }}
             href={githubAddress}
             target="_blank"
             rel="noopener noreferrer"
             className="hover:text-violet-500 transition-colors"
           >
             GitHub
-          </a>
-          <button
+          </motion.a>
+          <motion.button
+            whileHover={{ scale: 1.05, y: -1 }}
+            whileTap={{ scale: 0.95 }}
             onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
             className="hover:text-violet-500 transition-colors flex items-center gap-1 cursor-pointer"
           >
             <span>Back to top</span>
             <ArrowUp className="w-3.5 h-3.5" />
-          </button>
+          </motion.button>
         </div>
       </footer>
 
-      {/* Floating Scroll to Top with Circular Progress Indicator */}
+      {/* Floating Scroll to Top with Circular Progress Indicator & Microinteraction */}
       <AnimatePresence>
         {showScrollTop && (
           <motion.div
@@ -1256,9 +1325,11 @@ export default function App() {
             transition={{ duration: 0.25, ease: [0.16, 1, 0.3, 1] }}
             className="fixed bottom-6 right-6 z-40"
           >
-            <button
+            <motion.button
+              whileHover={{ scale: 1.15, y: -2 }}
+              whileTap={{ scale: 0.9 }}
               onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-              className={`relative p-3 rounded-full border shadow-2xl backdrop-blur-md transition-all active:scale-95 group flex items-center justify-center cursor-pointer ${
+              className={`relative p-3 rounded-full border shadow-2xl backdrop-blur-md transition-all group flex items-center justify-center cursor-pointer ${
                 isDark
                   ? 'bg-zinc-900/90 border-violet-500/30 text-violet-400 hover:text-white hover:bg-violet-950/40 shadow-violet-950/50'
                   : 'bg-white/95 border-violet-200 text-violet-600 hover:text-black hover:bg-violet-50 shadow-violet-100'
@@ -1291,7 +1362,7 @@ export default function App() {
                 />
               </svg>
               <ArrowUp className="w-4 h-4 group-hover:-translate-y-0.5 transition-transform" />
-            </button>
+            </motion.button>
           </motion.div>
         )}
       </AnimatePresence>

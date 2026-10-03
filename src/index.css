@@ -10,6 +10,22 @@
   }
 }
 
+/* Smooth global theme switching transition */
+.theme-smooth-transition,
+.theme-smooth-transition header,
+.theme-smooth-transition section,
+.theme-smooth-transition footer,
+.theme-smooth-transition div:not(.no-theme-transition),
+.theme-smooth-transition button:not(.no-theme-transition),
+.theme-smooth-transition a:not(.no-theme-transition),
+.theme-smooth-transition input,
+.theme-smooth-transition textarea,
+.theme-smooth-transition span {
+  transition-property: background-color, border-color, color, fill, stroke, box-shadow;
+  transition-duration: 350ms;
+  transition-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
 /* Custom subtle scrollbar */
 ::-webkit-scrollbar {
   width: 8px;
@@ -25,7 +41,7 @@
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #6366f1;
+  background: #8b5cf6;
 }
 
 @keyframes marquee {
