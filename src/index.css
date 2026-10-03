@@ -10,20 +10,22 @@
   }
 }
 
-/* Smooth global theme switching transition */
-.theme-smooth-transition,
-.theme-smooth-transition header,
-.theme-smooth-transition section,
-.theme-smooth-transition footer,
-.theme-smooth-transition div:not(.no-theme-transition),
-.theme-smooth-transition button:not(.no-theme-transition),
-.theme-smooth-transition a:not(.no-theme-transition),
-.theme-smooth-transition input,
-.theme-smooth-transition textarea,
-.theme-smooth-transition span {
-  transition-property: background-color, border-color, color, fill, stroke, box-shadow;
-  transition-duration: 350ms;
-  transition-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
+/* Stutter-free hardware-accelerated theme transition */
+html.theme-transitioning,
+html.theme-transitioning body,
+html.theme-transitioning #root,
+html.theme-transitioning header,
+html.theme-transitioning section,
+html.theme-transitioning footer,
+html.theme-transitioning nav,
+html.theme-transitioning .theme-card,
+html.theme-transitioning button,
+html.theme-transitioning input,
+html.theme-transitioning textarea {
+  transition: background-color 300ms cubic-bezier(0.16, 1, 0.3, 1),
+              border-color 300ms cubic-bezier(0.16, 1, 0.3, 1),
+              color 300ms cubic-bezier(0.16, 1, 0.3, 1) !important;
+  will-change: background-color, border-color, color;
 }
 
 /* Custom subtle scrollbar */
@@ -71,21 +73,11 @@
   }
 }
 
-@keyframes pulse-glow {
-  0%, 100% {
-    opacity: 0.4;
-    transform: scale(1);
-  }
-  50% {
-    opacity: 0.7;
-    transform: scale(1.05);
-  }
-}
-
 .animate-marquee-track {
   display: flex;
   width: max-content;
   animation: marquee 30s linear infinite;
+  will-change: transform;
 }
 
 .animate-marquee-track:hover {
@@ -94,6 +86,7 @@
 
 .animate-spin-badge {
   animation: spin-slow 15s linear infinite;
+  will-change: transform;
 }
 
 .animate-spin-badge:hover {
@@ -102,8 +95,5 @@
 
 .animate-float-card {
   animation: float-subtle 5s ease-in-out infinite;
-}
-
-.animate-glow-orb {
-  animation: pulse-glow 8s ease-in-out infinite;
+  will-change: transform;
 }

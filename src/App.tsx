@@ -24,8 +24,7 @@ import {
   Sun,
   Moon,
   Sparkles,
-  ChevronRight,
-  BookOpen
+  ChevronRight
 } from 'lucide-react';
 
 interface SubjectInfo {
@@ -35,7 +34,6 @@ interface SubjectInfo {
   headline: string;
   icon: React.ElementType;
   description: string;
-  accent: string;
   topics: string[];
 }
 
@@ -59,7 +57,16 @@ export default function App() {
   const emailAddress = "paragpareta@gmail.com";
   const githubAddress = "https://github.com/paragsup";
 
-  // Scroll animations & progress (used for circular scroll button & parallax)
+  // Butter-smooth theme toggle without frame drops
+  const toggleTheme = () => {
+    document.documentElement.classList.add('theme-transitioning');
+    setTheme((prev) => (prev === 'dark' ? 'light' : 'dark'));
+    setTimeout(() => {
+      document.documentElement.classList.remove('theme-transitioning');
+    }, 320);
+  };
+
+  // Scroll animations & progress
   const { scrollY, scrollYProgress } = useScroll();
   const smoothProgress = useSpring(scrollYProgress, {
     stiffness: 90,
@@ -67,10 +74,10 @@ export default function App() {
     restDelta: 0.001
   });
 
-  // Top level transforms for parallax animations
-  const orbY1 = useTransform(scrollY, [0, 1600], [0, -140]);
-  const orbY2 = useTransform(scrollY, [0, 1600], [0, 110]);
-  const watermarkX = useTransform(scrollY, [0, 1200], [0, -80]);
+  // Parallax shifts using transform (GPU accelerated)
+  const orbY1 = useTransform(scrollY, [0, 1600], [0, -120]);
+  const orbY2 = useTransform(scrollY, [0, 1600], [0, 90]);
+  const watermarkX = useTransform(scrollY, [0, 1200], [0, -60]);
   const circleProgressOffset = useTransform(smoothProgress, [0, 1], [125.6, 0]);
 
   // Track active section and scroll-to-top button
@@ -142,7 +149,6 @@ export default function App() {
       name: 'Physics',
       headline: 'Mechanics, Electromagnetism & Modern Physics',
       icon: Atom,
-      accent: 'from-violet-500 to-indigo-600',
       description: 'Strengthening intuition for physical systems through rigorous numerical problem sets, vector mechanics, and calculus formulations.',
       topics: [
         'Kinematics, Newton\'s Laws & Work-Energy',
@@ -160,7 +166,6 @@ export default function App() {
       name: 'Mathematics',
       headline: 'Calculus, Algebra & Coordinate Geometry',
       icon: Binary,
-      accent: 'from-indigo-500 to-cyan-500',
       description: 'Developing high deductive logic, algebraic dexterity, and multi-step computational stamina across real and complex domains.',
       topics: [
         'Differential & Integral Calculus',
@@ -178,7 +183,6 @@ export default function App() {
       name: 'Chemistry',
       headline: 'Physical, Organic & Inorganic Principles',
       icon: FlaskConical,
-      accent: 'from-fuchsia-500 to-violet-600',
       description: 'Balancing mathematical stoichiometry and thermodynamics with electron displacement effects, reaction mechanisms, and periodic bonding trends.',
       topics: [
         'Chemical Energetics & Thermodynamics',
@@ -193,12 +197,12 @@ export default function App() {
   ];
 
   const sectionFadeVariant: Variants = {
-    hidden: { opacity: 0, y: 30 },
+    hidden: { opacity: 0, y: 26 },
     visible: {
       opacity: 1,
       y: 0,
       transition: {
-        duration: 0.65,
+        duration: 0.6,
         ease: [0.21, 0.47, 0.32, 0.98]
       }
     }
@@ -208,15 +212,14 @@ export default function App() {
 
   return (
     <div
-      className={`min-h-screen theme-smooth-transition font-sans antialiased selection:bg-violet-500/30 selection:text-violet-200 flex flex-col relative overflow-x-hidden ${
+      className={`min-h-screen font-sans antialiased selection:bg-violet-500/30 selection:text-violet-200 flex flex-col relative overflow-x-hidden ${
         isDark ? 'bg-[#08090d] text-zinc-100' : 'bg-[#f8f9fd] text-slate-900'
       }`}
     >
-      {/* Ambient Radial Glowing Orbs */}
+      {/* Background Ambient Orbs (Static background colors with opacity for zero-lag switching) */}
       <div className="fixed inset-0 pointer-events-none z-0 overflow-hidden">
-        {/* Subtle dot matrix grid */}
         <div
-          className={`absolute inset-0 bg-[size:44px_44px] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_100%)] ${
+          className={`absolute inset-0 bg-[size:44px_44px] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_100%)] transition-opacity duration-300 ${
             isDark
               ? 'bg-[linear-gradient(to_right,#22233815_1px,transparent_1px),linear-gradient(to_bottom,#22233815_1px,transparent_1px)] opacity-80'
               : 'bg-[linear-gradient(to_right,#cbd5e140_1px,transparent_1px),linear-gradient(to_bottom,#cbd5e140_1px,transparent_1px)] opacity-60'
@@ -225,28 +228,28 @@ export default function App() {
 
         <motion.div
           style={{ y: orbY1 }}
-          className={`absolute -top-32 -left-20 w-[550px] h-[550px] rounded-full blur-[130px] pointer-events-none animate-glow-orb ${
-            isDark ? 'bg-violet-600/15' : 'bg-violet-400/20'
+          className={`absolute -top-32 -left-20 w-[550px] h-[550px] rounded-full blur-[120px] pointer-events-none bg-violet-600 transition-opacity duration-300 ${
+            isDark ? 'opacity-15' : 'opacity-10'
           }`}
         />
         <motion.div
           style={{ y: orbY2 }}
-          className={`absolute top-1/2 -right-40 w-[600px] h-[600px] rounded-full blur-[140px] pointer-events-none animate-glow-orb ${
-            isDark ? 'bg-cyan-600/12' : 'bg-cyan-400/15'
+          className={`absolute top-1/2 -right-40 w-[600px] h-[600px] rounded-full blur-[130px] pointer-events-none bg-cyan-600 transition-opacity duration-300 ${
+            isDark ? 'opacity-10' : 'opacity-8'
           }`}
         />
       </div>
 
-      {/* Sticky Top Header (Top line on scroll removed per user request) */}
+      {/* Sticky Top Header */}
       <header
-        className={`sticky top-0 z-40 backdrop-blur-xl border-b transition-colors duration-400 ${
+        className={`sticky top-0 z-40 backdrop-blur-xl border-b ${
           isDark
             ? 'bg-[#08090d]/85 border-zinc-800/80 shadow-2xl shadow-black/40'
-            : 'bg-[#f8f9fd]/85 border-slate-200/90 shadow-sm shadow-slate-200/50'
+            : 'bg-[#f8f9fd]/85 border-slate-200/90 shadow-sm shadow-slate-200/40'
         }`}
       >
         <div className="max-w-6xl mx-auto px-6 h-18 flex items-center justify-between relative z-10">
-          {/* Logo Wordmark with Microinteraction */}
+          {/* Logo Wordmark */}
           <motion.a
             href="#home"
             whileHover={{ scale: 1.03 }}
@@ -255,10 +258,10 @@ export default function App() {
             className="flex items-center gap-2.5 group cursor-pointer"
           >
             <div
-              className={`w-9 h-9 rounded-xl flex items-center justify-center font-bold text-sm tracking-tight border transition-all duration-300 group-hover:scale-105 ${
+              className={`w-9 h-9 rounded-xl flex items-center justify-center font-bold text-sm tracking-tight border transition-transform duration-200 group-hover:scale-105 ${
                 isDark
-                  ? 'bg-gradient-to-br from-zinc-900 to-zinc-950 border-violet-500/30 text-violet-400 shadow-sm shadow-violet-500/10'
-                  : 'bg-white border-violet-200 text-violet-600 shadow-md shadow-violet-100'
+                  ? 'bg-zinc-900 border-violet-500/30 text-violet-400'
+                  : 'bg-white border-violet-200 text-violet-600 shadow-sm'
               }`}
             >
               PP
@@ -278,9 +281,9 @@ export default function App() {
             </div>
           </motion.a>
 
-          {/* Floating Pill Navigation with Spring Microinteractions */}
+          {/* Floating Navigation Pill */}
           <nav
-            className={`hidden md:flex items-center gap-1 p-1 rounded-full border text-sm font-medium transition-colors duration-400 ${
+            className={`hidden md:flex items-center gap-1 p-1 rounded-full border text-sm font-medium ${
               isDark
                 ? 'bg-zinc-900/70 border-zinc-800/80 text-zinc-400 backdrop-blur-md'
                 : 'bg-white/80 border-slate-200 text-slate-600 shadow-sm backdrop-blur-md'
@@ -300,7 +303,7 @@ export default function App() {
                   whileHover={{ y: -1, scale: 1.03 }}
                   whileTap={{ scale: 0.95 }}
                   onClick={(e) => scrollToSection(e, item.id)}
-                  className={`relative px-4 py-1.5 rounded-full transition-all duration-200 cursor-pointer ${
+                  className={`relative px-4 py-1.5 rounded-full transition-colors cursor-pointer ${
                     isActive
                       ? isDark
                         ? 'text-white font-semibold'
@@ -313,10 +316,10 @@ export default function App() {
                   {isActive && (
                     <motion.div
                       layoutId="nav-active-pill"
-                      className={`absolute inset-0 rounded-full border shadow-sm ${
+                      className={`absolute inset-0 rounded-full border ${
                         isDark
-                          ? 'bg-zinc-800 border-zinc-700/80 shadow-black/50'
-                          : 'bg-slate-100 border-slate-300 shadow-slate-200'
+                          ? 'bg-zinc-800 border-zinc-700/80'
+                          : 'bg-slate-100 border-slate-300'
                       }`}
                       transition={{ type: 'spring', stiffness: 450, damping: 32 }}
                     />
@@ -327,17 +330,17 @@ export default function App() {
             })}
           </nav>
 
-          {/* Right Header Actions */}
+          {/* Right Header Controls */}
           <div className="flex items-center gap-3">
-            {/* Theme Toggle Button with Smooth Animated Morph */}
+            {/* Butter-Smooth Theme Switcher */}
             <motion.button
-              whileHover={{ scale: 1.08, rotate: 12 }}
-              whileTap={{ scale: 0.9, rotate: -25 }}
-              onClick={() => setTheme(isDark ? 'light' : 'dark')}
-              className={`p-2.5 rounded-xl border transition-all duration-300 flex items-center justify-center cursor-pointer ${
+              whileHover={{ scale: 1.08 }}
+              whileTap={{ scale: 0.9 }}
+              onClick={toggleTheme}
+              className={`p-2.5 rounded-xl border flex items-center justify-center cursor-pointer ${
                 isDark
-                  ? 'bg-zinc-900/80 border-zinc-800 text-amber-400 hover:border-zinc-700 hover:bg-zinc-800'
-                  : 'bg-white border-slate-200 text-violet-600 hover:border-slate-300 hover:bg-slate-50 shadow-sm'
+                  ? 'bg-zinc-900/80 border-zinc-800 text-amber-400 hover:border-zinc-700'
+                  : 'bg-white border-slate-200 text-violet-600 hover:border-slate-300 shadow-sm'
               }`}
               title={isDark ? 'Switch to light mode' : 'Switch to dark mode'}
               aria-label="Toggle color theme"
@@ -346,20 +349,20 @@ export default function App() {
                 {isDark ? (
                   <motion.div
                     key="sun"
-                    initial={{ rotate: -90, scale: 0.2, opacity: 0 }}
+                    initial={{ rotate: -90, scale: 0.3, opacity: 0 }}
                     animate={{ rotate: 0, scale: 1, opacity: 1 }}
-                    exit={{ rotate: 90, scale: 0.2, opacity: 0 }}
-                    transition={{ duration: 0.25, ease: "easeOut" }}
+                    exit={{ rotate: 90, scale: 0.3, opacity: 0 }}
+                    transition={{ duration: 0.2 }}
                   >
                     <Sun className="w-4 h-4 text-amber-400" />
                   </motion.div>
                 ) : (
                   <motion.div
                     key="moon"
-                    initial={{ rotate: 90, scale: 0.2, opacity: 0 }}
+                    initial={{ rotate: 90, scale: 0.3, opacity: 0 }}
                     animate={{ rotate: 0, scale: 1, opacity: 1 }}
-                    exit={{ rotate: -90, scale: 0.2, opacity: 0 }}
-                    transition={{ duration: 0.25, ease: "easeOut" }}
+                    exit={{ rotate: -90, scale: 0.3, opacity: 0 }}
+                    transition={{ duration: 0.2 }}
                   >
                     <Moon className="w-4 h-4 text-violet-600" />
                   </motion.div>
@@ -367,13 +370,13 @@ export default function App() {
               </AnimatePresence>
             </motion.button>
 
-            {/* Inexa Style "Say Hello" CTA with Microinteraction */}
+            {/* Inexa Style "Say Hello" CTA */}
             <motion.a
               href="#contact"
               whileHover={{ scale: 1.04, y: -1 }}
               whileTap={{ scale: 0.94 }}
               onClick={(e) => scrollToSection(e, 'contact')}
-              className="hidden sm:inline-flex items-center gap-1.5 px-4.5 py-2 text-xs font-semibold text-white bg-gradient-to-r from-violet-600 to-indigo-600 hover:from-violet-500 hover:to-indigo-500 transition-all rounded-xl shadow-md shadow-violet-600/25 group cursor-pointer"
+              className="hidden sm:inline-flex items-center gap-1.5 px-4.5 py-2 text-xs font-semibold text-white bg-gradient-to-r from-violet-600 to-indigo-600 hover:from-violet-500 hover:to-indigo-500 rounded-xl shadow-md shadow-violet-600/25 group cursor-pointer"
             >
               <span>Say Hello</span>
               <ArrowUpRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
@@ -383,7 +386,7 @@ export default function App() {
             <motion.button
               whileTap={{ scale: 0.92 }}
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-              className={`md:hidden p-2 rounded-xl border transition-colors ${
+              className={`md:hidden p-2 rounded-xl border ${
                 isDark
                   ? 'border-zinc-800 text-zinc-400 hover:text-white'
                   : 'border-slate-200 text-slate-600 hover:text-black'
@@ -402,7 +405,7 @@ export default function App() {
               initial={{ opacity: 0, height: 0 }}
               animate={{ opacity: 1, height: 'auto' }}
               exit={{ opacity: 0, height: 0 }}
-              transition={{ duration: 0.25, ease: [0.16, 1, 0.3, 1] }}
+              transition={{ duration: 0.22, ease: [0.16, 1, 0.3, 1] }}
               className={`md:hidden border-b px-6 py-4 space-y-2 overflow-hidden ${
                 isDark ? 'bg-[#08090d] border-zinc-800' : 'bg-white border-slate-200'
               }`}
@@ -433,7 +436,7 @@ export default function App() {
         </AnimatePresence>
       </header>
 
-      {/* Hero Section with Inexa Layout */}
+      {/* Hero Section */}
       <section id="home" className="relative z-10 pt-16 pb-20 md:pt-24 md:pb-32 px-6 max-w-6xl mx-auto w-full overflow-hidden">
         {/* Dynamic Watermark Typographic Stroke */}
         <motion.div
@@ -455,10 +458,10 @@ export default function App() {
             animate="visible"
             className="lg:col-span-7 space-y-6"
           >
-            {/* Status Pill with Neon Dot */}
+            {/* Status Pill */}
             <motion.div
               whileHover={{ scale: 1.03 }}
-              className={`inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full border text-xs font-medium tracking-wide shadow-xs cursor-default ${
+              className={`theme-card inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full border text-xs font-medium tracking-wide shadow-xs cursor-default ${
                 isDark
                   ? 'bg-zinc-900/80 border-violet-500/20 text-zinc-300'
                   : 'bg-white border-violet-200 text-violet-950'
@@ -499,7 +502,7 @@ export default function App() {
                 whileHover={{ scale: 1.04, y: -2 }}
                 whileTap={{ scale: 0.94 }}
                 onClick={(e) => scrollToSection(e, 'subjects')}
-                className="px-6 py-3 text-sm font-semibold text-white bg-gradient-to-r from-violet-600 to-indigo-600 hover:from-violet-500 hover:to-indigo-500 transition-all rounded-xl shadow-lg shadow-violet-600/30 inline-flex items-center gap-2 group cursor-pointer"
+                className="px-6 py-3 text-sm font-semibold text-white bg-gradient-to-r from-violet-600 to-indigo-600 hover:from-violet-500 hover:to-indigo-500 rounded-xl shadow-lg shadow-violet-600/30 inline-flex items-center gap-2 group cursor-pointer"
               >
                 <span>View Core Subjects</span>
                 <ArrowRight className="w-4 h-4 group-hover:translate-x-1.5 transition-transform" />
@@ -510,7 +513,7 @@ export default function App() {
                 whileHover={{ scale: 1.03, y: -1 }}
                 whileTap={{ scale: 0.95 }}
                 onClick={(e) => scrollToSection(e, 'contact')}
-                className={`px-6 py-3 text-sm font-semibold rounded-xl border transition-all cursor-pointer ${
+                className={`theme-card px-6 py-3 text-sm font-semibold rounded-xl border cursor-pointer ${
                   isDark
                     ? 'bg-zinc-900/90 border-zinc-800 text-zinc-300 hover:text-white hover:border-zinc-700'
                     : 'bg-white border-slate-300 text-slate-800 hover:text-black hover:border-slate-400 shadow-sm'
@@ -523,7 +526,7 @@ export default function App() {
                 whileHover={{ scale: 1.04, y: -1 }}
                 whileTap={{ scale: 0.93 }}
                 onClick={handleCopyEmail}
-                className={`px-4 py-3 text-sm font-medium rounded-xl border transition-all inline-flex items-center gap-2 cursor-pointer ${
+                className={`theme-card px-4 py-3 text-sm font-medium rounded-xl border inline-flex items-center gap-2 cursor-pointer ${
                   isDark
                     ? 'bg-zinc-900/60 border-zinc-800 text-zinc-400 hover:text-zinc-200 hover:border-zinc-700'
                     : 'bg-slate-100 border-slate-200 text-slate-600 hover:text-slate-900'
@@ -544,7 +547,7 @@ export default function App() {
             </div>
           </motion.div>
 
-          {/* Right Column: Hero Visual Card + Signature Inexa Purple Rotating Badge */}
+          {/* Right Column: Hero Visual Card + Rotating Badge */}
           <motion.div
             variants={sectionFadeVariant}
             initial="hidden"
@@ -552,14 +555,14 @@ export default function App() {
             className="lg:col-span-5 flex justify-center relative"
           >
             <div className="relative w-full max-w-sm sm:max-w-md animate-float-card">
-              {/* Outer Card with Vibrant Glass Gradient & Hover Microinteraction */}
+              {/* Outer Card */}
               <motion.div
                 whileHover={{ y: -4, scale: 1.01 }}
                 transition={{ duration: 0.25 }}
-                className={`relative rounded-3xl p-6 border transition-all duration-300 overflow-hidden ${
+                className={`theme-card relative rounded-3xl p-6 border overflow-hidden ${
                   isDark
-                    ? 'bg-gradient-to-b from-[#121422]/95 to-[#0b0c14]/95 border-violet-500/25 shadow-2xl shadow-violet-950/30 hover:border-violet-500/40'
-                    : 'bg-white border-slate-200/90 shadow-2xl shadow-indigo-100/80 hover:border-violet-300'
+                    ? 'bg-[#10121d] border-violet-500/25 shadow-2xl shadow-violet-950/30'
+                    : 'bg-white border-slate-200/90 shadow-2xl shadow-indigo-100/70'
                 }`}
               >
                 {/* Decorative Window Controls */}
@@ -581,10 +584,10 @@ export default function App() {
                 {/* Profile Card Body */}
                 <div className="space-y-4">
                   <div
-                    className={`p-5 rounded-2xl border transition-colors ${
+                    className={`theme-card p-5 rounded-2xl border ${
                       isDark
-                        ? 'bg-[#08090f]/80 border-zinc-800/80'
-                        : 'bg-slate-50/80 border-slate-200'
+                        ? 'bg-[#08090f]/90 border-zinc-800/80'
+                        : 'bg-slate-50/90 border-slate-200'
                     }`}
                   >
                     <p className="text-xs font-mono text-violet-500 uppercase tracking-wider mb-1 font-semibold">
@@ -600,12 +603,12 @@ export default function App() {
                     </p>
                   </div>
 
-                  {/* 3 Subject Meters inspired by Inexa with Microinteraction */}
+                  {/* 3 Subject Meters */}
                   <div className="grid grid-cols-3 gap-2.5 text-center">
                     <motion.div
                       whileHover={{ scale: 1.05, y: -2 }}
-                      className={`p-3 rounded-xl border transition-colors cursor-default ${
-                        isDark ? 'bg-zinc-900/50 border-zinc-800 hover:border-violet-500/30' : 'bg-white border-slate-200 shadow-xs hover:border-violet-300'
+                      className={`theme-card p-3 rounded-xl border cursor-default ${
+                        isDark ? 'bg-zinc-900/50 border-zinc-800' : 'bg-white border-slate-200 shadow-xs'
                       }`}
                     >
                       <Atom className="w-4 h-4 mx-auto text-violet-400 mb-1" />
@@ -614,8 +617,8 @@ export default function App() {
                     </motion.div>
                     <motion.div
                       whileHover={{ scale: 1.05, y: -2 }}
-                      className={`p-3 rounded-xl border transition-colors cursor-default ${
-                        isDark ? 'bg-zinc-900/50 border-zinc-800 hover:border-cyan-500/30' : 'bg-white border-slate-200 shadow-xs hover:border-cyan-300'
+                      className={`theme-card p-3 rounded-xl border cursor-default ${
+                        isDark ? 'bg-zinc-900/50 border-zinc-800' : 'bg-white border-slate-200 shadow-xs'
                       }`}
                     >
                       <Binary className="w-4 h-4 mx-auto text-cyan-400 mb-1" />
@@ -624,8 +627,8 @@ export default function App() {
                     </motion.div>
                     <motion.div
                       whileHover={{ scale: 1.05, y: -2 }}
-                      className={`p-3 rounded-xl border transition-colors cursor-default ${
-                        isDark ? 'bg-zinc-900/50 border-zinc-800 hover:border-fuchsia-500/30' : 'bg-white border-slate-200 shadow-xs hover:border-fuchsia-300'
+                      className={`theme-card p-3 rounded-xl border cursor-default ${
+                        isDark ? 'bg-zinc-900/50 border-zinc-800' : 'bg-white border-slate-200 shadow-xs'
                       }`}
                     >
                       <FlaskConical className="w-4 h-4 mx-auto text-fuchsia-400 mb-1" />
@@ -636,7 +639,7 @@ export default function App() {
 
                   {/* Quote / Dedication */}
                   <div
-                    className={`p-3.5 rounded-xl border text-xs leading-relaxed ${
+                    className={`theme-card p-3.5 rounded-xl border text-xs leading-relaxed ${
                       isDark
                         ? 'bg-violet-950/20 border-violet-800/40 text-violet-300'
                         : 'bg-violet-50/80 border-violet-200 text-violet-900'
@@ -647,14 +650,13 @@ export default function App() {
                 </div>
               </motion.div>
 
-              {/* The Signature Inexa Rotating Purple Stamp Badge with Hover Microinteraction */}
+              {/* Inexa Rotating Purple Stamp Badge */}
               <div className="absolute -bottom-6 -right-6 sm:-bottom-8 sm:-right-8 z-30">
                 <motion.div
                   whileHover={{ scale: 1.15 }}
                   whileTap={{ scale: 0.95 }}
                   className="relative w-28 h-28 sm:w-32 sm:h-32 flex items-center justify-center group cursor-pointer"
                 >
-                  {/* Rotating Circular Text Ribbon */}
                   <div className="absolute inset-0 animate-spin-badge">
                     <svg className="w-full h-full" viewBox="0 0 100 100">
                       <path
@@ -672,8 +674,7 @@ export default function App() {
                     </svg>
                   </div>
 
-                  {/* Eye-catching Purple Center Bubble Badge (Inexa signature) */}
-                  <div className="w-14 h-14 rounded-full bg-gradient-to-tr from-violet-600 via-indigo-600 to-purple-500 shadow-xl shadow-violet-600/40 border-2 border-white/30 flex items-center justify-center text-white transition-transform duration-300 group-hover:scale-110">
+                  <div className="w-14 h-14 rounded-full bg-gradient-to-tr from-violet-600 via-indigo-600 to-purple-500 shadow-xl shadow-violet-600/40 border-2 border-white/30 flex items-center justify-center text-white transition-transform duration-200 group-hover:scale-110">
                     <Sparkles className="w-5 h-5 animate-pulse" />
                   </div>
                 </motion.div>
@@ -683,12 +684,12 @@ export default function App() {
         </div>
       </section>
 
-      {/* Infinite Horizontal Smooth Marquee Track */}
+      {/* Infinite Horizontal Marquee Track */}
       <div
-        className={`w-full py-4.5 border-y overflow-hidden whitespace-nowrap relative select-none transition-colors duration-400 ${
+        className={`theme-card w-full py-4.5 border-y overflow-hidden whitespace-nowrap relative select-none ${
           isDark
             ? 'bg-[#0b0c14]/90 border-zinc-800/80'
-            : 'bg-slate-100/90 border-slate-200 shadow-inner'
+            : 'bg-slate-100/90 border-slate-200'
         }`}
       >
         <div className="animate-marquee-track text-xs font-mono uppercase tracking-widest font-semibold flex items-center gap-8">
@@ -748,12 +749,12 @@ export default function App() {
               I have not built software projects yet, as my energy is channeled toward competitive entrance examination success and earning an engineering seat.
             </p>
 
-            {/* Inexa-style 3 Subject Percentage Progress Rings with Microinteractions */}
+            {/* 3 Subject Percentage Progress Rings */}
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-4">
               <motion.div
                 whileHover={{ y: -5, scale: 1.02 }}
                 transition={{ duration: 0.2 }}
-                className={`p-5 rounded-2xl border transition-all duration-300 cursor-default ${
+                className={`theme-card p-5 rounded-2xl border cursor-default ${
                   isDark
                     ? 'bg-[#10121d] border-zinc-800/80 hover:border-violet-500/40'
                     : 'bg-white border-slate-200 shadow-sm hover:border-violet-300'
@@ -774,7 +775,7 @@ export default function App() {
               <motion.div
                 whileHover={{ y: -5, scale: 1.02 }}
                 transition={{ duration: 0.2 }}
-                className={`p-5 rounded-2xl border transition-all duration-300 cursor-default ${
+                className={`theme-card p-5 rounded-2xl border cursor-default ${
                   isDark
                     ? 'bg-[#10121d] border-zinc-800/80 hover:border-cyan-500/40'
                     : 'bg-white border-slate-200 shadow-sm hover:border-cyan-300'
@@ -795,7 +796,7 @@ export default function App() {
               <motion.div
                 whileHover={{ y: -5, scale: 1.02 }}
                 transition={{ duration: 0.2 }}
-                className={`p-5 rounded-2xl border transition-all duration-300 cursor-default ${
+                className={`theme-card p-5 rounded-2xl border cursor-default ${
                   isDark
                     ? 'bg-[#10121d] border-zinc-800/80 hover:border-fuchsia-500/40'
                     : 'bg-white border-slate-200 shadow-sm hover:border-fuchsia-300'
@@ -817,7 +818,7 @@ export default function App() {
         </div>
       </motion.section>
 
-      {/* Core Subjects Section with Big Typography & Interactive Accordions */}
+      {/* Core Subjects Section */}
       <motion.section
         id="subjects"
         variants={sectionFadeVariant}
@@ -842,7 +843,7 @@ export default function App() {
           </p>
         </div>
 
-        {/* Big Typography Interactive Rows with Click & Hover Microinteractions */}
+        {/* Big Typography Interactive Rows */}
         <div className="space-y-4">
           {subjects.map((sub) => {
             const isSelected = activeSubjectId === sub.id;
@@ -852,10 +853,10 @@ export default function App() {
                 key={sub.id}
                 whileHover={{ scale: 1.008 }}
                 transition={{ duration: 0.2 }}
-                className={`rounded-2xl border transition-all duration-300 overflow-hidden ${
+                className={`theme-card rounded-2xl border overflow-hidden ${
                   isSelected
                     ? isDark
-                      ? 'bg-gradient-to-b from-[#131525] to-[#0c0d17] border-violet-500/60 shadow-xl shadow-violet-950/30'
+                      ? 'bg-[#10121d] border-violet-500/60 shadow-xl shadow-violet-950/30'
                       : 'bg-white border-violet-400 shadow-lg shadow-violet-100'
                     : isDark
                     ? 'bg-[#0f1019]/60 border-zinc-800/80 hover:border-zinc-700'
@@ -898,12 +899,12 @@ export default function App() {
                     <motion.div
                       whileHover={{ scale: 1.1 }}
                       whileTap={{ scale: 0.9 }}
-                      className={`w-11 h-11 rounded-xl border flex items-center justify-center transition-all duration-300 ${
+                      className={`w-11 h-11 rounded-xl border flex items-center justify-center transition-transform duration-200 ${
                         isSelected
                           ? 'rotate-90 bg-gradient-to-r from-violet-600 to-indigo-600 border-violet-400 text-white shadow-md shadow-violet-600/30'
                           : isDark
-                          ? 'bg-zinc-900 border-zinc-800 text-zinc-400 group-hover:text-white group-hover:border-zinc-700'
-                          : 'bg-slate-100 border-slate-200 text-slate-600 group-hover:text-black group-hover:border-slate-300'
+                          ? 'bg-zinc-900 border-zinc-800 text-zinc-400 group-hover:text-white'
+                          : 'bg-slate-100 border-slate-200 text-slate-600 group-hover:text-black'
                       }`}
                     >
                       <ChevronRight className="w-5 h-5" />
@@ -918,7 +919,7 @@ export default function App() {
                       initial={{ opacity: 0, height: 0 }}
                       animate={{ opacity: 1, height: 'auto' }}
                       exit={{ opacity: 0, height: 0 }}
-                      transition={{ duration: 0.32, ease: [0.16, 1, 0.3, 1] }}
+                      transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
                       className="overflow-hidden"
                     >
                       <div
@@ -950,7 +951,7 @@ export default function App() {
                                 key={idx}
                                 whileHover={{ x: 4, scale: 1.01 }}
                                 transition={{ duration: 0.15 }}
-                                className={`p-3.5 rounded-xl border text-xs flex items-center gap-3 transition-colors cursor-default ${
+                                className={`theme-card p-3.5 rounded-xl border text-xs flex items-center gap-3 cursor-default ${
                                   isDark
                                     ? 'bg-[#10121e]/80 border-zinc-800/80 text-zinc-300 hover:border-violet-500/30'
                                     : 'bg-white border-slate-200 text-slate-800 hover:border-violet-300 shadow-xs'
@@ -974,10 +975,10 @@ export default function App() {
 
       {/* High-Contrast Highlights Banner */}
       <section
-        className={`py-16 px-6 border-b transition-colors duration-400 ${
+        className={`py-16 px-6 border-b ${
           isDark
-            ? 'bg-gradient-to-r from-[#121424] to-[#0d0e17] border-violet-500/20'
-            : 'bg-gradient-to-r from-slate-900 to-indigo-950 text-white border-slate-900 shadow-xl'
+            ? 'bg-[#10121d] border-violet-500/20'
+            : 'bg-slate-900 text-white border-slate-900 shadow-xl'
         }`}
       >
         <div className="max-w-6xl mx-auto flex flex-col md:flex-row items-center justify-between gap-8">
@@ -999,7 +1000,7 @@ export default function App() {
               whileHover={{ scale: 1.05, y: -2 }}
               whileTap={{ scale: 0.94 }}
               onClick={(e) => scrollToSection(e, 'contact')}
-              className="px-6 py-3 text-xs font-semibold text-white bg-gradient-to-r from-violet-600 to-indigo-600 hover:from-violet-500 hover:to-indigo-500 transition-all rounded-xl shadow-lg shadow-violet-600/30 cursor-pointer"
+              className="px-6 py-3 text-xs font-semibold text-white bg-gradient-to-r from-violet-600 to-indigo-600 hover:from-violet-500 hover:to-indigo-500 rounded-xl shadow-lg shadow-violet-600/30 cursor-pointer"
             >
               Get In Touch
             </motion.a>
@@ -1007,7 +1008,7 @@ export default function App() {
         </div>
       </section>
 
-      {/* Contact Section with Inexa Topic Selector Pills */}
+      {/* Contact Section */}
       <motion.section
         id="contact"
         variants={sectionFadeVariant}
@@ -1035,11 +1036,11 @@ export default function App() {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-10">
           {/* Left Cards */}
           <div className="lg:col-span-5 space-y-4">
-            {/* Direct Email Card with Microinteraction */}
+            {/* Direct Email Card */}
             <motion.div
               whileHover={{ y: -3, scale: 1.01 }}
               transition={{ duration: 0.2 }}
-              className={`p-5 rounded-2xl border flex items-center justify-between transition-colors ${
+              className={`theme-card p-5 rounded-2xl border flex items-center justify-between ${
                 isDark
                   ? 'bg-[#10121d] border-zinc-800/80 shadow-md shadow-black/20 hover:border-violet-500/40'
                   : 'bg-white border-slate-200 shadow-sm hover:border-violet-300'
@@ -1047,7 +1048,7 @@ export default function App() {
             >
               <div className="flex items-center gap-3.5">
                 <div
-                  className={`w-11 h-11 rounded-xl border flex items-center justify-center text-violet-500 ${
+                  className={`theme-card w-11 h-11 rounded-xl border flex items-center justify-center text-violet-500 ${
                     isDark ? 'bg-zinc-800/80 border-zinc-700' : 'bg-violet-50 border-violet-200'
                   }`}
                 >
@@ -1067,7 +1068,7 @@ export default function App() {
                 whileHover={{ scale: 1.15 }}
                 whileTap={{ scale: 0.88 }}
                 onClick={handleCopyEmail}
-                className={`p-2.5 rounded-xl border transition-colors cursor-pointer ${
+                className={`theme-card p-2.5 rounded-xl border cursor-pointer ${
                   isDark
                     ? 'border-zinc-800 text-zinc-400 hover:text-white hover:border-zinc-700'
                     : 'border-slate-200 text-slate-500 hover:text-black hover:border-slate-300'
@@ -1078,7 +1079,7 @@ export default function App() {
               </motion.button>
             </motion.div>
 
-            {/* GitHub Card with Microinteraction */}
+            {/* GitHub Card */}
             <motion.a
               href={githubAddress}
               target="_blank"
@@ -1086,7 +1087,7 @@ export default function App() {
               whileHover={{ y: -3, scale: 1.01 }}
               whileTap={{ scale: 0.98 }}
               transition={{ duration: 0.2 }}
-              className={`p-5 rounded-2xl border flex items-center justify-between transition-all group cursor-pointer ${
+              className={`theme-card p-5 rounded-2xl border flex items-center justify-between group cursor-pointer ${
                 isDark
                   ? 'bg-[#10121d] border-zinc-800/80 hover:border-violet-500/40 shadow-md shadow-black/20'
                   : 'bg-white border-slate-200 hover:border-violet-300 shadow-sm'
@@ -1094,7 +1095,7 @@ export default function App() {
             >
               <div className="flex items-center gap-3.5">
                 <div
-                  className={`w-11 h-11 rounded-xl border flex items-center justify-center text-violet-500 ${
+                  className={`theme-card w-11 h-11 rounded-xl border flex items-center justify-center text-violet-500 ${
                     isDark ? 'bg-zinc-800/80 border-zinc-700' : 'bg-violet-50 border-violet-200'
                   }`}
                 >
@@ -1107,16 +1108,16 @@ export default function App() {
                   </p>
                 </div>
               </div>
-              <ArrowUpRight className="w-4 h-4 text-zinc-400 group-hover:text-violet-500 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all" />
+              <ArrowUpRight className="w-4 h-4 text-zinc-400 group-hover:text-violet-500 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
             </motion.a>
 
             {/* Giant Inexa Email Highlight Box */}
             <motion.div
               whileHover={{ y: -2 }}
-              className={`p-6 rounded-2xl border text-center transition-colors ${
+              className={`theme-card p-6 rounded-2xl border text-center ${
                 isDark
-                  ? 'bg-gradient-to-b from-[#131526]/60 to-[#0c0d16] border-violet-500/25'
-                  : 'bg-gradient-to-b from-violet-50 to-indigo-50/50 border-violet-200'
+                  ? 'bg-[#10121d] border-violet-500/25'
+                  : 'bg-violet-50/70 border-violet-200'
               }`}
             >
               <p className={`text-xs font-mono uppercase tracking-wider mb-2 font-semibold ${isDark ? 'text-zinc-500' : 'text-slate-400'}`}>
@@ -1133,15 +1134,15 @@ export default function App() {
 
           {/* Right: Message Form */}
           <div
-            className={`lg:col-span-7 p-6 sm:p-8 rounded-3xl border transition-colors duration-400 ${
+            className={`theme-card lg:col-span-7 p-6 sm:p-8 rounded-3xl border ${
               isDark
-                ? 'bg-[#10121d]/90 border-zinc-800/80 shadow-2xl shadow-black/30'
+                ? 'bg-[#10121d] border-zinc-800/80 shadow-2xl shadow-black/30'
                 : 'bg-white border-slate-200 shadow-lg shadow-slate-100'
             }`}
           >
             <h3 className="text-base font-bold mb-4">Send a Direct Message</h3>
 
-            {/* Topic Selector Pills with Microinteractions */}
+            {/* Topic Selector Pills */}
             <div className="mb-6">
               <label
                 className={`block text-xs font-mono uppercase tracking-wider mb-2.5 font-semibold ${
@@ -1160,7 +1161,7 @@ export default function App() {
                       whileHover={{ scale: 1.06, y: -1 }}
                       whileTap={{ scale: 0.93 }}
                       onClick={() => setSelectedTopic(topic)}
-                      className={`px-4 py-1.5 rounded-full text-xs font-medium border transition-all cursor-pointer ${
+                      className={`px-4 py-1.5 rounded-full text-xs font-medium border cursor-pointer ${
                         isSelected
                           ? 'bg-gradient-to-r from-violet-600 to-indigo-600 border-violet-500 text-white shadow-md shadow-violet-600/30'
                           : isDark
@@ -1267,7 +1268,7 @@ export default function App() {
                   disabled={formStatus === 'submitting'}
                   whileHover={{ scale: 1.02, y: -1 }}
                   whileTap={{ scale: 0.96 }}
-                  className="w-full py-3 px-4 bg-gradient-to-r from-violet-600 to-indigo-600 hover:from-violet-500 hover:to-indigo-500 active:scale-[0.99] text-white font-semibold text-xs rounded-xl transition-all shadow-md shadow-violet-600/30 flex items-center justify-center gap-2 disabled:opacity-50 cursor-pointer group"
+                  className="w-full py-3 px-4 bg-gradient-to-r from-violet-600 to-indigo-600 hover:from-violet-500 hover:to-indigo-500 active:scale-[0.99] text-white font-semibold text-xs rounded-xl shadow-md shadow-violet-600/30 flex items-center justify-center gap-2 disabled:opacity-50 cursor-pointer group"
                 >
                   {formStatus === 'submitting' ? (
                     <span>Opening Mail Client...</span>
@@ -1286,7 +1287,7 @@ export default function App() {
 
       {/* Footer */}
       <footer
-        className={`relative z-10 mt-auto py-8 px-6 border-t max-w-6xl mx-auto w-full flex flex-col sm:flex-row items-center justify-between gap-4 text-xs transition-colors duration-400 ${
+        className={`theme-card relative z-10 mt-auto py-8 px-6 border-t max-w-6xl mx-auto w-full flex flex-col sm:flex-row items-center justify-between gap-4 text-xs ${
           isDark ? 'border-zinc-800/60 text-zinc-500' : 'border-slate-200 text-slate-500'
         }`}
       >
@@ -1315,7 +1316,7 @@ export default function App() {
         </div>
       </footer>
 
-      {/* Floating Scroll to Top with Circular Progress Indicator & Microinteraction */}
+      {/* Floating Scroll to Top with Circular Progress Indicator */}
       <AnimatePresence>
         {showScrollTop && (
           <motion.div
@@ -1329,7 +1330,7 @@ export default function App() {
               whileHover={{ scale: 1.15, y: -2 }}
               whileTap={{ scale: 0.9 }}
               onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-              className={`relative p-3 rounded-full border shadow-2xl backdrop-blur-md transition-all group flex items-center justify-center cursor-pointer ${
+              className={`relative p-3 rounded-full border shadow-2xl backdrop-blur-md group flex items-center justify-center cursor-pointer ${
                 isDark
                   ? 'bg-zinc-900/90 border-violet-500/30 text-violet-400 hover:text-white hover:bg-violet-950/40 shadow-violet-950/50'
                   : 'bg-white/95 border-violet-200 text-violet-600 hover:text-black hover:bg-violet-50 shadow-violet-100'
