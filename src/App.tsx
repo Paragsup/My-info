@@ -7,6 +7,7 @@ import {
   AnimatePresence,
   type Variants
 } from 'motion/react';
+import { Analytics } from '@vercel/analytics/react';
 import {
   Mail,
   Copy,
@@ -1367,6 +1368,7 @@ export default function App() {
           </motion.div>
         )}
       </AnimatePresence>
+      <Analytics />
     </div>
   );
 }
